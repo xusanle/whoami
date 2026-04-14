@@ -1,393 +1,484 @@
-/* General Body & Typography */
-:root {
-    --text-color: #333;
-    --background-color: #F8F8F8; /* 米白色 */
-    --accent-color: #927e69; /* 少量点缀色，例如金色或棕色 */
-    --link-color: #555;
-    --hover-color: #000;
+/* ===========================
+   RESET & BASE
+=========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 14px;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Noto Sans SC', 'Roboto Flex', sans-serif; /* 确保中英文都能正确显示 */
-    color: var(--text-color);
-    background-color: var(--background-color);
-    margin: 0;
-    padding: 0;
-    line-height: 1.6;
-    scroll-behavior: smooth; /* 平滑滚动 */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden; /* 防止横向滚动条 */
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #fff;
+  color: #111;
+  font-family: 'Roboto Flex', 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
 }
 
-a {
-    color: var(--link-color);
-    text-decoration: none;
-    transition: color 0.3s ease;
+/* ===========================
+   LEFT PANEL
+=========================== */
+.left-panel {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  padding: 40px 32px 40px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  border-right: 1px solid #e8e8e8;
+  overflow-y: auto;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
 }
 
-a:hover {
-    color: var(--hover-color);
-}
+/* Hide scrollbar on left panel */
+.left-panel::-webkit-scrollbar { display: none; }
+.left-panel { -ms-overflow-style: none; scrollbar-width: none; }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Noto Sans SC', 'Roboto Flex', sans-serif;
-    font-weight: 300; /* 默认轻细，根据需要局部加粗 */
-    margin-top: 2em;
-    margin-bottom: 0.8em;
-    line-height: 1.2;
-}
-
-h2 { font-size: 2em; }
-h3 { font-size: 1.5em; }
-h4 { font-size: 1em; }
-p { margin-bottom: 1em; }
-ul { list-style: none; padding: 0; margin: 0;}
-li { margin-bottom: 0.5em; }
-
-/* Loader */
-#loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: white;
-    z-index: 99999999;
-    transition: opacity 0.5s ease-out;
-    display: flex; /* 居中加载动画 (可选) */
-    align-items: center;
-    justify-content: center;
-    font-size: 2em;
-    color: var(--text-color);
-}
-#loader.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-
-/* Site Layout */
-.content {
-    display: flex;
-    flex-direction: column; /* 垂直堆叠 header 和 main-section-wrapper */
-    min-height: 100vh;
-}
-
-#header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px 5vw; /* 左右内边距 */
-    z-index: 1000;
-    pointer-events: none; /* 允许点击穿透到下面的滚动内容 */
-}
-
-/* 左上角名字 */
+/* LOGO */
 .logo {
-    pointer-events: auto; /* 允许点击名字 */
-}
-.brand-name {
-    font-size: 1.4em; /* 名字字体大小 */
-    font-weight: 700; /* 加粗 */
-    line-height: 1.2;
-    color: var(--text-color);
-    text-align: left;
-    display: block; /* 确保换行 */
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
 }
 
-/* 居中导航 */
-.main-menu {
-    position: absolute; /* 相对于 header 定位 */
-    left: 50%;
-    transform: translateX(-50%); /* 水平居中 */
-    pointer-events: auto; /* 允许点击导航 */
+.logo-zh {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
 }
 
-.main-menu ul {
-    display: flex;
-    flex-direction: column; /* 垂直排列 */
-    align-items: flex-start; /* 左对齐 */
-    padding: 0;
-    margin: 0;
+.logo-en {
+  font-family: 'Roboto Flex', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.main-menu li {
-    margin-bottom: 10px; /* 导航项间距 */
+/* NAV */
+.main-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
-.main-menu .nav-link {
-    font-size: 1.1em;
-    color: var(--link-color);
-    padding: 5px 0;
-    position: relative;
-    font-weight: 300; /* 不加粗 */
-    white-space: nowrap; /* 防止换行 */
+.nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.main-menu .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: var(--hover-color);
-    transition: width 0.3s ease-in-out;
+.nav-primary {
+  font-family: 'Roboto Flex', 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  color: #111;
+  cursor: pointer;
+  display: inline-block;
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+  line-height: 1.6;
 }
 
-.main-menu .nav-link:hover::after,
-.main-menu .nav-link.active::after {
-    width: 100%;
+.nav-primary.active,
+.nav-primary:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-
-/* Main Content Wrapper (Left + Right Columns) */
-.main-section-wrapper {
-    display: flex;
-    width: 100%;
-    position: relative; /* 相对定位，为了内部的 sticky 元素 */
+.nav-contact .nav-primary {
+  cursor: default;
+}
+.nav-contact .nav-primary:hover {
+  text-decoration: none;
 }
 
-/* Left Column: Home List (用于图片/文本滚动触发点) */
-.home-list {
-    flex: 3; /* 占据 3/5 的宽度 */
-    min-height: 100vh; /* 确保有足够的滚动区域 */
-    padding-left: 50vw; /* 留出左侧空间给导航 */
-    box-sizing: border-box;
-    pointer-events: none; /* 允许点击穿透到下面的滚动内容 */
+.nav-zh {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
 }
 
-.home-list .hi {
-    height: 100vh; /* 每个 hi 元素占据一整屏的高度，用于触发滚动 */
-    padding: 20px 0; /* 垂直内边距 */
-    display: flex; /* 居中文本，如果有的话 */
-    align-items: center;
-    justify-content: flex-start; /* 左对齐 */
+.nav-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 2px;
 }
 
-.home-list .hi a {
-    pointer-events: auto; /* 允许点击 hi 内部的链接 */
-    display: block;
-    width: 100%;
-    height: 100%; /* 确保链接可点击范围足够大 */
-    text-indent: -9999px; /* 隐藏文本 */
-    overflow: hidden; /* 隐藏文本 */
+.nav-secondary {
+  font-family: 'Roboto Flex', 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: #111;
+  display: inline-block;
+  padding-bottom: 1px;
+  transition: opacity 0.2s;
+  line-height: 1.7;
 }
 
-/* Right Column: Home List Scroll (图片和文字内容) */
-.home-list-scroll {
-    flex: 2; /* 占据 2/5 的宽度 */
-    position: relative; /* 内部 sticky 元素的上下文 */
-    padding-right: 5vw; /* 右侧内边距 */
-    box-sizing: border-box;
+.nav-secondary.active,
+.nav-secondary:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
-.scrollie {
-    min-height: 100vh; /* 每个 scrollie 至少占据一屏高度 */
-    position: sticky; /* 核心：吸附效果 */
-    top: 0; /* 吸附在顶部 */
-    display: flex;
-    align-items: center; /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
-    opacity: 0; /* 初始隐藏 */
-    transition: opacity 0.5s ease-out;
-    width: 100%; /* 占据父元素全部宽度 */
-    height: 100vh; /* 占据父元素全部高度 */
-    pointer-events: none; /* 默认不可点击，除非是链接 */
+.nav-email {
+  letter-spacing: 0;
+  font-size: 0.78rem;
+  color: #444;
 }
 
-.scrollie.active {
-    opacity: 1;
-    pointer-events: auto; /* 活跃时可点击 */
-    z-index: 1; /* 确保活跃的在最上层 */
+.nav-email:hover {
+  color: #111;
 }
 
-/* Media Items (Images and Videos) */
+.nav-external {
+  color: #888;
+}
+
+.nav-external:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: #888;
+}
+
+/* ===========================
+   RIGHT PANEL
+=========================== */
+.right-panel {
+  margin-left: 260px;
+  width: calc(100vw - 260px);
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* Hide default scrollbar, keep functional */
+.right-panel::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* ===========================
+   IMAGE STRIP
+=========================== */
+.image-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
 .media-item {
-    background-color: #eee; /* 占位背景色 */
+  width: 100%;
+  overflow: hidden;
 }
 
 .media-item img,
 .media-item video {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* 确保图片/视频完整显示，不裁剪 */
-    display: block;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* 图片阴影 */
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
 }
 
-.media-item video {
-    width: 100%; /* 视频也可能需要 object-fit: cover 来填充 */
-    height: 100%;
-    object-fit: cover;
+/* Wide/tall image — full bleed */
+.media-item--wide img {
+  max-height: 100vh;
+  object-fit: cover;
+  width: 100%;
 }
 
-/* Content Text Blocks */
-.content-text-block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* 左对齐 */
-    justify-content: center;
-    padding: 0 5%; /* 文本内容内边距 */
-    box-sizing: border-box;
-    background-color: transparent; /* 背景透明 */
-    color: var(--text-color);
-    pointer-events: auto; /* 文本区块内容可交互 */
+/* Pair layout: two images side by side */
+.media-item--pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
 }
 
-.content-text-block h2 {
-    font-size: 2.5em;
-    font-weight: 300; /* 不加粗 */
-    margin-top: 0;
-    margin-bottom: 0.5em;
-    padding-bottom: 5px;
-    border-bottom: 1px solid rgba(0,0,0,0.1); /* 简单下划线 */
+.media-item--pair img {
+  height: 70vh;
+  object-fit: cover;
 }
 
-.content-text-block h3 {
-    font-size: 1.2em;
-    font-weight: 300;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
-    color: var(--accent-color);
+/* Video */
+.media-item--video video {
+  width: 100%;
+  max-height: 100vh;
+  object-fit: cover;
 }
 
-.content-text-block p,
-.content-text-block ul {
-    max-width: 80%; /* 限制文本宽度，避免过长 */
-    font-size: 1.05em;
-    line-height: 1.7;
+/* Small visual rhythm separators between images */
+.media-item + .media-item {
+  margin-top: 2px;
 }
 
-.content-text-block li {
-    margin-bottom: 0.8em;
+/* ===========================
+   CONTENT / TEXT SECTION
+=========================== */
+.content-section {
+  padding: 80px 72px 120px 72px;
+  max-width: 740px;
 }
 
-.description {
-    font-size: 1.2em;
-    line-height: 1.8;
+.content-block {
+  margin-bottom: 56px;
 }
 
-.experience-item {
-    display: flex;
-    margin-bottom: 2.5em;
-    flex-wrap: wrap; /* 允许换行 */
+.content-block--experience {
+  margin-bottom: 8px;
 }
 
-.experience-date {
-    flex-basis: 150px;
-    font-weight: 300;
-    color: var(--accent-color);
-    flex-shrink: 0;
-    margin-right: 20px;
+/* Section titles (h2 level) */
+.section-title {
+  font-family: 'Roboto Flex', 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #111;
 }
 
-.experience-details {
-    flex-grow: 1;
-    max-width: calc(100% - 170px); /* 减去日期宽度和间距 */
+.section-title-zh {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
 }
 
-.experience-details h3 {
-    margin-top: 0;
-    font-weight: 300;
-    color: var(--text-color);
-}
-.experience-details h4 {
-    margin-top: -0.5em;
-    font-size: 0.9em;
-    color: #666;
-    font-weight: 300;
-}
-.experience-details p {
-    font-size: 0.9em;
-    margin-bottom: 0.5em;
+/* Sub-titles (h3 level) */
+.sub-title {
+  font-family: 'Roboto Flex', 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
-.tags-list span {
-    display: inline-block;
-    background-color: rgba(146, 126, 105, 0.1);
-    color: var(--accent-color);
-    padding: 5px 10px;
-    border-radius: 3px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    font-size: 0.9em;
+.sub-title-zh {
+  font-family: 'Noto Sans SC', sans-serif;
 }
 
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    #header {
-        padding: 20px 3vw;
-    }
-    .brand-name {
-        font-size: 1.2em;
-    }
-    .main-menu {
-        display: none; /* 在小屏幕上隐藏居中导航 */
-    }
-
-    .main-section-wrapper {
-        flex-direction: column; /* 变为单列布局 */
-    }
-
-    .home-list {
-        display: none; /* 隐藏左侧图片滚动触发区 */
-    }
-
-    .home-list-scroll {
-        flex: auto;
-        width: 100%;
-        padding: 0 5vw; /* 调整内边距 */
-        margin-top: 100px; /* 给顶部 fixed header 留出空间 */
-    }
-
-    .scrollie {
-        position: relative; /* 取消 sticky 效果 */
-        min-height: auto; /* 高度自适应 */
-        height: auto;
-        padding: 5vh 0; /* 垂直内边距 */
-        opacity: 1; /* 小屏幕默认可见 */
-        transition: none; /* 取消动画 */
-        transform: none; /* 取消动画 */
-    }
-
-    .scrollie.media-item {
-        height: 60vh; /* 图片/视频在小屏幕上占据一定高度 */
-        margin-bottom: 30px;
-    }
-
-    .scrollie.content-text-block {
-        padding: 30px 0;
-    }
-
-    .content-text-block h2 {
-        font-size: 2em;
-    }
-    .content-text-block h3 {
-        font-size: 1.1em;
-    }
-    .content-text-block p,
-    .content-text-block ul {
-        max-width: 100%; /* 文本充满宽度 */
-        font-size: 1em;
-    }
+/* Intro text */
+.intro-text {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.93rem;
+  line-height: 2;
+  color: #222;
+  letter-spacing: 0.02em;
 }
 
+/* Skills list */
+.skill-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skill-list li {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  padding-left: 12px;
+  border-left: 1px solid #ccc;
+  color: #333;
+}
+
+/* Core list */
+.core-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.core-list li {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  line-height: 1.9;
+  color: #333;
+}
+
+.core-label {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.83rem;
+  letter-spacing: 0.02em;
+}
+
+/* Tag list */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.tag-list span {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.82rem;
+  color: #555;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 2px;
+}
+
+/* Experience items */
+.exp-item {
+  margin-bottom: 36px;
+}
+
+.exp-item:last-child {
+  margin-bottom: 0;
+}
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+  gap: 16px;
+}
+
+.exp-date {
+  font-family: 'Roboto Flex', sans-serif;
+  font-weight: 300;
+  font-size: 0.78rem;
+  color: #888;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+.exp-company {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-align: right;
+  letter-spacing: 0.01em;
+}
+
+.exp-role {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.82rem;
+  color: #666;
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+.exp-detail {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exp-detail li {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 300;
+  font-size: 0.83rem;
+  line-height: 1.9;
+  color: #333;
+  padding-left: 12px;
+  position: relative;
+}
+
+.exp-detail li::before {
+  content: '—';
+  position: absolute;
+  left: -2px;
+  color: #bbb;
+  font-size: 0.75rem;
+  top: 0.1em;
+}
+
+/* Education */
+.edu-item .exp-role {
+  margin-bottom: 0;
+}
+
+/* ===========================
+   SCROLL FADE-IN ANIMATION
+=========================== */
+.media-item,
+.content-block {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.media-item.visible,
+.content-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
 @media (max-width: 768px) {
-    .brand-name {
-        font-size: 1.1em;
-    }
-    .scrollie.media-item {
-        height: 50vh;
-    }
-    .content-text-block h2 {
-        font-size: 1.8em;
-    }
+  body {
+    flex-direction: column;
+    overflow: auto;
+    height: auto;
+  }
+
+  .left-panel {
+    position: relative;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 28px 24px;
+    gap: 24px;
+  }
+
+  .right-panel {
+    margin-left: 0;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .media-item--pair img {
+    height: 45vw;
+  }
+
+  .content-section {
+    padding: 48px 24px 80px 24px;
+  }
+
+  .exp-header {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .exp-company {
+    text-align: left;
+  }
 }
