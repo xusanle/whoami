@@ -32,72 +32,105 @@ a:hover {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Noto Sans SC', 'Roboto Flex', sans-serif;
-    font-weight: 700; /* 加粗 */
+    font-weight: 300; /* 默认轻细，根据需要局部加粗 */
     margin-top: 2em;
     margin-bottom: 0.8em;
     line-height: 1.2;
 }
 
-h1 { font-size: 2.5em; }
 h2 { font-size: 2em; }
 h3 { font-size: 1.5em; }
+h4 { font-size: 1em; }
 p { margin-bottom: 1em; }
 ul { list-style: none; padding: 0; margin: 0;}
 li { margin-bottom: 0.5em; }
 
-/* Site Layout (Flexbox for two columns) */
-.site-container {
-    display: flex;
-    min-height: 100vh;
-    position: relative;
-}
-
-/* Fixed Name (Top Right) */
-.fixed-name {
+/* Loader */
+#loader {
     position: fixed;
-    top: 30px; /* 调整与顶部的距离 */
-    right: 5vw; /* 调整与右侧的距离 */
-    z-index: 1000;
-    font-size: 1.2em; /* 调整字体大小 */
-    font-weight: 700; /* 加粗 */
-    text-align: right; /* 右对齐 */
-    line-height: 1.2;
-}
-
-.fixed-name .brand-name {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 99999999;
+    transition: opacity 0.5s ease-out;
+    display: flex; /* 居中加载动画 (可选) */
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
     color: var(--text-color);
 }
-
-/* Center Navigation */
-.main-nav-center {
-    position: fixed;
-    top: 50%; /* 垂直居中 */
-    left: 50%; /* 水平居中 */
-    transform: translate(-50%, -50%); /* 精确居中 */
-    z-index: 999;
-    background-color: transparent; /* 背景透明 */
-    padding: 0;
+#loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
-.main-nav-center ul {
-    display: flex; /* 让导航项横向排列 */
+
+/* Site Layout */
+.content {
+    display: flex;
+    flex-direction: column; /* 垂直堆叠 header 和 main-section-wrapper */
+    min-height: 100vh;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 5vw; /* 左右内边距 */
+    z-index: 1000;
+    pointer-events: none; /* 允许点击穿透到下面的滚动内容 */
+}
+
+/* 左上角名字 */
+.logo {
+    pointer-events: auto; /* 允许点击名字 */
+}
+.brand-name {
+    font-size: 1.4em; /* 名字字体大小 */
+    font-weight: 700; /* 加粗 */
+    line-height: 1.2;
+    color: var(--text-color);
+    text-align: left;
+    display: block; /* 确保换行 */
+}
+
+/* 居中导航 */
+.main-menu {
+    position: absolute; /* 相对于 header 定位 */
+    left: 50%;
+    transform: translateX(-50%); /* 水平居中 */
+    pointer-events: auto; /* 允许点击导航 */
+}
+
+.main-menu ul {
+    display: flex;
     flex-direction: column; /* 垂直排列 */
     align-items: flex-start; /* 左对齐 */
+    padding: 0;
+    margin: 0;
 }
 
-.main-nav-center li {
-    margin-bottom: 15px; /* 调整导航项间距 */
+.main-menu li {
+    margin-bottom: 10px; /* 导航项间距 */
 }
 
-.main-nav-center .nav-link {
-    font-size: 1.1em; /* 导航字体大小 */
+.main-menu .nav-link {
+    font-size: 1.1em;
     color: var(--link-color);
     padding: 5px 0;
-    position: relative; /* 用于下划线 */
+    position: relative;
     font-weight: 300; /* 不加粗 */
+    white-space: nowrap; /* 防止换行 */
 }
 
-.main-nav-center .nav-link::after {
+.main-menu .nav-link::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -108,86 +141,172 @@ li { margin-bottom: 0.5em; }
     transition: width 0.3s ease-in-out;
 }
 
-.main-nav-center .nav-link:hover::after,
-.main-nav-center .nav-link.active::after {
+.main-menu .nav-link:hover::after,
+.main-menu .nav-link.active::after {
     width: 100%;
 }
 
 
-/* Content Wrapper (Containing both text and sticky image columns) */
-.content-wrapper {
+/* Main Content Wrapper (Left + Right Columns) */
+.main-section-wrapper {
     display: flex;
     width: 100%;
-    margin-top: 100vh; /* 确保内容从第一张图片下方开始 */
+    position: relative; /* 相对定位，为了内部的 sticky 元素 */
 }
 
-/* Left Text Content Column */
-.text-content-column {
+/* Left Column: Home List (用于图片/文本滚动触发点) */
+.home-list {
     flex: 3; /* 占据 3/5 的宽度 */
-    padding: 5vh 10vw 5vh 50vw; /* 左侧留出更多空间给导航，右侧图片 */
+    min-height: 100vh; /* 确保有足够的滚动区域 */
+    padding-left: 50vw; /* 留出左侧空间给导航 */
     box-sizing: border-box;
-    z-index: 10; /* 确保文字在图片上方 */
-    min-width: 400px; /* 最小宽度，防止文字过窄 */
+    pointer-events: none; /* 允许点击穿透到下面的滚动内容 */
 }
 
-.content-section {
-    min-height: 100vh; /* 保证每个内容区至少一屏高，方便图片切换 */
-    padding-top: 5vh;
-    padding-bottom: 5vh;
+.home-list .hi {
+    height: 100vh; /* 每个 hi 元素占据一整屏的高度，用于触发滚动 */
+    padding: 20px 0; /* 垂直内边距 */
+    display: flex; /* 居中文本，如果有的话 */
+    align-items: center;
+    justify-content: flex-start; /* 左对齐 */
+}
+
+.home-list .hi a {
+    pointer-events: auto; /* 允许点击 hi 内部的链接 */
+    display: block;
+    width: 100%;
+    height: 100%; /* 确保链接可点击范围足够大 */
+    text-indent: -9999px; /* 隐藏文本 */
+    overflow: hidden; /* 隐藏文本 */
+}
+
+/* Right Column: Home List Scroll (图片和文字内容) */
+.home-list-scroll {
+    flex: 2; /* 占据 2/5 的宽度 */
+    position: relative; /* 内部 sticky 元素的上下文 */
+    padding-right: 5vw; /* 右侧内边距 */
+    box-sizing: border-box;
+}
+
+.scrollie {
+    min-height: 100vh; /* 每个 scrollie 至少占据一屏高度 */
+    position: sticky; /* 核心：吸附效果 */
+    top: 0; /* 吸附在顶部 */
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
     opacity: 0; /* 初始隐藏 */
-    transform: translateY(20px); /* 初始位置 */
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* 渐入动画 */
+    transition: opacity 0.5s ease-out;
+    width: 100%; /* 占据父元素全部宽度 */
+    height: 100vh; /* 占据父元素全部高度 */
+    pointer-events: none; /* 默认不可点击，除非是链接 */
 }
 
-.first-section {
-    min-height: calc(100vh - 100px); /* 首页内容可以稍微短一点，给导航留出空间 */
-    padding-top: 0;
+.scrollie.active {
+    opacity: 1;
+    pointer-events: auto; /* 活跃时可点击 */
+    z-index: 1; /* 确保活跃的在最上层 */
 }
 
+/* Media Items (Images and Videos) */
+.media-item {
+    background-color: #eee; /* 占位背景色 */
+}
 
-/* About Me Section */
-.about-me-section {
+.media-item img,
+.media-item video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 确保图片/视频完整显示，不裁剪 */
+    display: block;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* 图片阴影 */
+}
+
+.media-item video {
+    width: 100%; /* 视频也可能需要 object-fit: cover 来填充 */
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Content Text Blocks */
+.content-text-block {
     display: flex;
     flex-direction: column;
+    align-items: flex-start; /* 左对齐 */
+    justify-content: center;
+    padding: 0 5%; /* 文本内容内边距 */
+    box-sizing: border-box;
+    background-color: transparent; /* 背景透明 */
+    color: var(--text-color);
+    pointer-events: auto; /* 文本区块内容可交互 */
 }
-.about-intro p {
-    font-size: 1.1em;
+
+.content-text-block h2 {
+    font-size: 2.5em;
+    font-weight: 300; /* 不加粗 */
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0,0,0,0.1); /* 简单下划线 */
+}
+
+.content-text-block h3 {
+    font-size: 1.2em;
+    font-weight: 300;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    color: var(--accent-color);
+}
+
+.content-text-block p,
+.content-text-block ul {
+    max-width: 80%; /* 限制文本宽度，避免过长 */
+    font-size: 1.05em;
+    line-height: 1.7;
+}
+
+.content-text-block li {
+    margin-bottom: 0.8em;
+}
+
+.description {
+    font-size: 1.2em;
     line-height: 1.8;
 }
 
-.about-details {
+.experience-item {
     display: flex;
-    justify-content: space-between;
-    gap: 30px;
-    margin-top: 2em;
+    margin-bottom: 2.5em;
+    flex-wrap: wrap; /* 允许换行 */
 }
 
-.about-info-card {
-    flex: 1;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.experience-date {
+    flex-basis: 150px;
+    font-weight: 300;
+    color: var(--accent-color);
+    flex-shrink: 0;
+    margin-right: 20px;
 }
 
-.about-info-card h3 {
+.experience-details {
+    flex-grow: 1;
+    max-width: calc(100% - 170px); /* 减去日期宽度和间距 */
+}
+
+.experience-details h3 {
     margin-top: 0;
-    margin-bottom: 10px;
-    color: var(--accent-color);
+    font-weight: 300;
+    color: var(--text-color);
 }
-
-.sub-sections {
-    margin-top: 3em;
+.experience-details h4 {
+    margin-top: -0.5em;
+    font-size: 0.9em;
+    color: #666;
+    font-weight: 300;
 }
-
-.sub-sections h3 {
-    color: var(--accent-color);
-    font-size: 1.2em;
-    margin-top: 2em;
-}
-
-.sub-sections ul {
-    margin-bottom: 2em;
+.experience-details p {
+    font-size: 0.9em;
+    margin-bottom: 0.5em;
 }
 
 .tags-list span {
@@ -201,195 +320,74 @@ li { margin-bottom: 0.5em; }
     font-size: 0.9em;
 }
 
-.about-image {
-    width: 250px; /* 简历照片宽度 */
-    height: 300px; /* 简历照片高度 */
-    overflow: hidden;
-    border-radius: 5px;
-    margin-top: 3em;
-    margin-left: auto; /* 靠右显示 */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    position: relative; /* For the profile photo position */
-}
-
-.profile-avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* Experiences Section */
-.experience-item {
-    display: flex;
-    margin-bottom: 3em;
-    gap: 30px;
-}
-
-.experience-date {
-    flex-basis: 150px; /* 日期宽度 */
-    font-weight: bold;
-    color: var(--accent-color);
-    flex-shrink: 0;
-}
-
-.experience-details {
-    flex-grow: 1;
-}
-
-.experience-details h3 {
-    margin-top: 0;
-    color: var(--text-color);
-}
-.experience-details h4 {
-    margin-top: -0.5em;
-    font-size: 1em;
-    color: #666;
-}
-.experience-details p {
-    margin-bottom: 0.8em;
-    font-size: 0.95em;
-}
-
-/* Contact Section */
-.contact-section p {
-    font-size: 1.1em;
-}
-
-.contact-section a {
-    color: var(--accent-color);
-    text-decoration: underline;
-}
-
-/* Right Sticky Image Column */
-.sticky-image-column {
-    flex: 2; /* 占据 2/5 的宽度 */
-    position: sticky; /* 核心：固定定位 */
-    top: 0;
-    height: 100vh; /* 占据整个视口高度 */
-    overflow: hidden; /* 隐藏超出部分 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none; /* 防止点击事件干扰 */
-    z-index: 5;
-}
-
-.image-gallery {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.gallery-item {
-    position: absolute;
-    width: 80%; /* 图片宽度 */
-    height: 80%; /* 图片高度 */
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #eee; /* 占位背景色 */
-}
-
-.gallery-item.active {
-    opacity: 1;
-    transform: scale(1);
-    z-index: 1;
-}
-
-.gallery-item img,
-.gallery-item video {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* 保持图片完整显示 */
-    display: block;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* 图片阴影 */
-}
-
-.gallery-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 视频通常希望覆盖 */
-}
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .fixed-name {
-        font-size: 1.1em;
-        top: 20px;
-        right: 3vw;
+    #header {
+        padding: 20px 3vw;
+    }
+    .brand-name {
+        font-size: 1.2em;
+    }
+    .main-menu {
+        display: none; /* 在小屏幕上隐藏居中导航 */
     }
 
-    .main-nav-center {
-        display: none; /* 在小屏幕上隐藏居中导航，可以考虑汉堡菜单 */
+    .main-section-wrapper {
+        flex-direction: column; /* 变为单列布局 */
     }
 
-    .content-wrapper {
-        flex-direction: column;
-        margin-top: 0; /* 小屏幕上不需要这个 */
+    .home-list {
+        display: none; /* 隐藏左侧图片滚动触发区 */
     }
 
-    .text-content-column {
+    .home-list-scroll {
         flex: auto;
-        padding: 5vh 5vw; /* 调整内边距 */
         width: 100%;
+        padding: 0 5vw; /* 调整内边距 */
+        margin-top: 100px; /* 给顶部 fixed header 留出空间 */
     }
 
-    .sticky-image-column {
-        position: relative; /* 在小屏幕上取消 sticky */
-        height: 60vh; /* 图片占据一部分视口高度 */
-        width: 100%;
-        order: -1; /* 让图片显示在顶部 */
-    }
-    .gallery-item {
-        width: 90%;
-        height: 90%;
-    }
-
-    .about-details {
-        flex-direction: column;
+    .scrollie {
+        position: relative; /* 取消 sticky 效果 */
+        min-height: auto; /* 高度自适应 */
+        height: auto;
+        padding: 5vh 0; /* 垂直内边距 */
+        opacity: 1; /* 小屏幕默认可见 */
+        transition: none; /* 取消动画 */
+        transform: none; /* 取消动画 */
     }
 
-    .about-image {
-        margin-right: auto; /* 居中显示 */
-        margin-left: auto;
+    .scrollie.media-item {
+        height: 60vh; /* 图片/视频在小屏幕上占据一定高度 */
+        margin-bottom: 30px;
     }
 
-    .experience-item {
-        flex-direction: column;
-        gap: 10px;
+    .scrollie.content-text-block {
+        padding: 30px 0;
     }
-    .experience-date {
-        flex-basis: auto;
+
+    .content-text-block h2 {
+        font-size: 2em;
+    }
+    .content-text-block h3 {
+        font-size: 1.1em;
+    }
+    .content-text-block p,
+    .content-text-block ul {
+        max-width: 100%; /* 文本充满宽度 */
+        font-size: 1em;
     }
 }
 
 @media (max-width: 768px) {
-    .fixed-name {
-        font-size: 1em;
-        top: 15px;
-        right: 2vw;
+    .brand-name {
+        font-size: 1.1em;
     }
-    h1 { font-size: 2em; }
-    h2 { font-size: 1.8em; }
-    h3 { font-size: 1.3em; }
-
-    .text-content-column {
-        padding: 3vh 3vw;
-    }
-
-    .content-section {
-        min-height: auto; /* 在小屏幕上允许内容根据自身高度撑开 */
-        padding-top: 3vh;
-        padding-bottom: 3vh;
-    }
-    .sticky-image-column {
+    .scrollie.media-item {
         height: 50vh;
+    }
+    .content-text-block h2 {
+        font-size: 1.8em;
     }
 }
