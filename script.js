@@ -1,116 +1,125 @@
-document.addEventListener('DOMContentLoaded', () => {
+$(document).ready(function() {
+    // 预加载器
+    setTimeout(function() {
+        $('#loader').addClass('hidden'); // 淡出隐藏
+    }, 500); // 0.5秒后隐藏
 
-    const textSections = document.querySelectorAll('.text-content-column .content-section');
-    const galleryItems = document.querySelectorAll('.image-gallery .gallery-item');
-    const navLinks = document.querySelectorAll('.main-nav-center .nav-link');
-    
-    // 用于加载图片或视频
-    function loadMedia(item, src, type) {
-        if (!item.dataset.loaded) { // 防止重复加载
-            item.innerHTML = ''; // 清空占位内容
+    const $mainMenuLinks = $('.main-menu .nav-link');
+    const $homeListScrollItems = $('.home-list-scroll .scrollie');
+    const $homeListTriggerItems = $('.home-list .hi'); // 左侧用于触发滚动的元素
+
+    // 初始化加载第一个图片/视频
+    function loadMedia(item) {
+        if (!$(item).data('loaded')) {
+            const src = $(item).data('src');
+            const type = $(item).data('type');
+            $(item).empty(); // 清空原有内容
+
             if (type === 'image') {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = "作品展示";
-                item.appendChild(img);
+                const img = $('<img>').attr('src', src).attr('alt', '作品展示');
+                $(item).append(img);
             } else if (type === 'video') {
-                const video = document.createElement('video');
-                video.src = src;
-                video.autoplay = true;
-                video.loop = true;
-                video.muted = true;
-                video.playsInline = true;
-                item.appendChild(video);
-                video.load();
-                video.play().catch(e => console.error("Video autoplay error:", e));
+                const video = $('<video>').attr({
+                    'src': src,
+                    'autoplay': true,
+                    'loop': true,
+                    'muted': true,
+                    'playsinline': true // 移动设备内联播放
+                });
+                $(item).append(video);
+                video[0].load();
+                video[0].play().catch(e => console.error("Video autoplay error:", e));
             }
-            item.dataset.loaded = 'true';
+            $(item).data('loaded', true);
         }
     }
 
-    // Intersection Observer for Text Sections
-    const sectionObserverOptions = {
+    // 默认加载第一个图片
+    if ($homeListScrollItems.length > 0 && $homeListScrollItems.eq(0).hasClass('media-item')) {
+        loadMedia($homeListScrollItems.eq(0));
+        $homeListScrollItems.eq(0).addClass('active');
+    } else if ($homeListScrollItems.length > 0 && $homeListScrollItems.eq(0).hasClass('content-text-block')) {
+        // 如果第一个是文本区块，默认也激活它
+        $homeListScrollItems.eq(0).addClass('active');
+    }
+
+
+    // 监听页面滚动，根据滚动位置激活对应的图片或文本区块
+    const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.3 // 当30%的区块可见时触发
+        threshold: 0.5 // 当50%的元素进入视口时触发
     };
 
-    const sectionObserver = new IntersectionObserver((entries) => {
+    const scrollieObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            const targetId = entry.target.id;
-
-            // 内容渐入动画
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            } else {
-                // 如果内容离开视口，可以考虑重置动画，或者只在进入时触发
-                entry.target.style.opacity = '0';
-                entry.target.style.transform = 'translateY(20px)';
-            }
-
-            // 更新导航链接的激活状态和图片显示
-            if (entry.isIntersecting) {
-                // 激活当前区块对应的导航链接
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${targetId}`) {
-                        link.classList.add('active');
-                    } else if (targetId === 'hero-intro' && link.getAttribute('href') === '#about') {
-                        // 如果在第一个介绍区，导航默认激活About
-                        link.classList.add('active');
-                    }
+                // 确保只有一个 active 图片/文本
+                $homeListScrollItems.removeClass('active');
+                // 暂停所有视频，除了当前活跃的
+                $('.home-list-scroll .media-item video').each(function() {
+                    this.pause();
                 });
 
-                // 根据当前活跃的文本区块，显示对应的图片
-                // 假设每个文本区块对应一个图片，或者按顺序对应
-                let imageIndex = Array.from(textSections).indexOf(entry.target);
-                if (imageIndex >= 0 && imageIndex < galleryItems.length) {
-                    galleryItems.forEach((item, idx) => {
-                        item.classList.remove('active');
-                        // 暂停非活跃视频
-                        const video = item.querySelector('video');
-                        if (video) video.pause();
-                    });
-                    const activeImage = galleryItems[imageIndex];
-                    loadMedia(activeImage, activeImage.dataset.src, activeImage.dataset.type);
-                    activeImage.classList.add('active');
-                    // 播放活跃视频
-                    const activeVideo = activeImage.querySelector('video');
-                    if (activeVideo) activeVideo.play().catch(e => console.error("Video autoplay error:", e));
+                $(entry.target).addClass('active');
+                
+                // 加载当前活跃的媒体
+                if ($(entry.target).hasClass('media-item')) {
+                    loadMedia(entry.target);
+                    const video = $(entry.target).find('video')[0];
+                    if (video) video.play().catch(e => console.error("Video autoplay error:", e));
                 }
+
+                // 激活主导航链接
+                let targetId = $(entry.target).attr('id');
+                if (targetId === 'hero-intro') { // 如果在顶部介绍区，导航激活 About me
+                     targetId = 'about';
+                }
+
+                $mainMenuLinks.removeClass('active');
+                $mainMenuLinks.filter(`[href="#${targetId}"]`).addClass('active');
             }
         });
-    }, sectionObserverOptions);
+    }, observerOptions);
 
-    // 观察所有文本区块
-    textSections.forEach(section => {
-        sectionObserver.observe(section);
+    // 观察 home-list-scroll 中的所有 scrollie 元素
+    $homeListScrollItems.each(function() {
+        scrollieObserver.observe(this);
     });
 
-    // 为导航链接添加平滑滚动和活跃状态切换
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+    // 导航链接点击平滑滚动
+    $mainMenuLinks.on('click', function(e) {
+        const targetHref = $(this).attr('href');
+        if (targetHref.startsWith('#')) { // 内部链接
             e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId.startsWith('#')) { // 内部链接
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    const offset = 0; // 调整滚动偏移，确保顶部对齐
-                    window.scrollTo({
-                        top: targetElement.offsetTop - offset,
-                        behavior: 'smooth'
-                    });
-                }
-            } else { // 外部链接
-                window.location.href = targetId;
+            const targetId = targetHref.substring(1);
+            const $targetElement = $(`#${targetId}`);
+            if ($targetElement.length) {
+                // 滚动到对应的 home-list-scroll 里的 scrollie 元素
+                $('html, body').animate({
+                    scrollTop: $targetElement.offset().top
+                }, 800);
             }
-        });
+        }
+        // 外部链接不阻止默认行为
     });
 
-    // 初始加载第一个图片，防止页面加载时右侧空白
-    if (galleryItems.length > 0) {
-        loadMedia(galleryItems[0], galleryItems[0].dataset.src, galleryItems[0].dataset.type);
-        galleryItems[0].classList.add('active');
+    // 小屏幕下，导航链接点击时，为了模拟大屏的滚动效果，也滚动到对应的内容
+    // (因为小屏幕下 home-list 是隐藏的，需要手动处理)
+    if ($(window).width() <= 1024) {
+         $('.main-menu').on('click', '.nav-link', function(e) {
+            const targetHref = $(this).attr('href');
+            if (targetHref.startsWith('#')) {
+                e.preventDefault();
+                const targetId = targetHref.substring(1);
+                const $targetElement = $(`#${targetId}`);
+                if ($targetElement.length) {
+                    $('html, body').animate({
+                        scrollTop: $targetElement.offset().top - $('#header').outerHeight() // 减去头部高度
+                    }, 800);
+                }
+            }
+        });
     }
+
 });
