@@ -1,0 +1,462 @@
+/* 通用样式 */
+:root {
+    --primary-font-en: 'Roboto Flex', sans-serif;
+    --primary-font-cn: 'Noto Sans SC', sans-serif;
+    --text-color: #333;
+    --light-text-color: #777;
+    --background-color: #f7f7f7; /* 米白色 */
+    --link-color: #333;
+    --link-hover-color: #000;
+    --border-color: #eee;
+    --accent-color: #b8a68b; /* 少量点缀色，例如金色/棕色 */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--primary-font-cn), var(--primary-font-en); /* 优先中文，次优先英文 */
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+    overflow-x: hidden; /* 防止横向滚动条 */
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+    border-bottom: 1px solid var(--link-hover-color);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header 样式 - 模仿 gabrielacoll.com 布局 */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2vw 4vw; /* 使用视口单位保持响应性 */
+    position: fixed; /* 固定在顶部 */
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+    background-color: transparent; /* 初始透明 */
+    transition: background-color 0.3s ease;
+    min-height: 100vh; /* 确保占据整个视口高度 */
+    position: relative; /* 改为relative，让内容区从下方开始 */
+}
+
+.main-header .logo {
+    flex: 1; /* 占据左侧空间 */
+    text-align: left;
+    padding-top: 10px; /* 稍微下移 */
+}
+
+.main-header .brand-name {
+    font-family: var(--primary-font-en); /* 品牌名可以用英文或更显眼的字体 */
+    font-size: 1.5em; /* 相对大小 */
+    letter-spacing: 0.1em;
+    color: var(--text-color);
+}
+
+.main-nav {
+    flex: 2; /* 占据中间空间 */
+    text-align: center;
+}
+
+.main-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column; /* 垂直排列 */
+    align-items: center; /* 居中 */
+}
+
+.main-nav ul li {
+    margin-bottom: 15px; /* 调整行距 */
+}
+
+.main-nav ul li a {
+    font-family: var(--primary-font-en); /* 导航文字用英文或更细的字体 */
+    font-size: 1.1em;
+    color: var(--text-color);
+    text-decoration: none;
+    position: relative; /* 为下划线做准备 */
+    padding-bottom: 3px; /* 下划线和文字间距 */
+}
+
+.main-nav ul li a:hover,
+.main-nav ul li a.active { /* active 类用于当前点击或滚动到的部分 */
+    border-bottom: 1px solid var(--link-hover-color);
+}
+
+
+.image-carousel {
+    flex: 1; /* 占据右侧空间 */
+    position: relative;
+    height: 100vh; /* 占据整个视口高度 */
+    overflow: hidden; /* 隐藏超出部分 */
+    display: flex; /* 确保子元素垂直布局 */
+    flex-direction: column;
+    justify-content: center; /* 垂直居中 */
+    align-items: center; /* 水平居中 */
+}
+
+.carousel-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.carousel-item.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 覆盖整个容器 */
+    display: block;
+}
+
+/* 主内容区样式 */
+.content-area {
+    padding: 100px 4vw; /* 顶部留白，防止被固定头部遮挡，左右留白 */
+    max-width: 900px; /* 控制内容宽度，使其不会太宽 */
+    margin: 0 auto; /* 居中 */
+    padding-top: 100vh; /* 确保内容在 Header 轮播图下方开始 */
+}
+
+.content-section {
+    margin-bottom: 80px; /* 各区块之间的间距 */
+    padding-top: 60px; /* 锚点跳转时，内容不会被导航栏遮挡 */
+    animation: fadeIn 1s ease-out forwards; /* 初始加载动画 */
+    opacity: 0; /* 初始隐藏 */
+    transform: translateY(20px); /* 初始位置稍微下移 */
+}
+
+.content-section:nth-child(even) {
+    animation-delay: 0.2s;
+}
+.content-section:nth-child(odd) {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-section h2 {
+    font-family: var(--primary-font-en); /* 标题使用英文/衬线字体 */
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    text-align: center; /* 标题居中 */
+    letter-spacing: 0.05em;
+    color: var(--link-hover-color); /* 标题颜色 */
+}
+
+.content-section h3 {
+    font-family: var(--primary-font-cn);
+    font-size: 1.6em;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.content-section p, .content-section ul {
+    font-family: var(--primary-font-cn);
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+/* About Me Section */
+.about-me-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 整体居中 */
+}
+
+.about-intro {
+    max-width: 700px;
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 1.1em;
+    color: var(--light-text-color);
+}
+
+.about-details {
+    display: flex;
+    justify-content: center;
+    gap: 50px; /* 卡片间距 */
+    width: 100%;
+    margin-bottom: 60px;
+    flex-wrap: wrap; /* 响应式布局 */
+}
+
+.about-info-card {
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    flex: 1;
+    min-width: 280px; /* 最小宽度 */
+    max-width: 400px;
+}
+
+.about-info-card h3 {
+    font-size: 1.3em;
+    margin-top: 0;
+    color: var(--accent-color);
+}
+.about-info-card p {
+    margin: 5px 0;
+}
+
+.profile-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 40px;
+    border: 2px solid var(--accent-color);
+}
+
+.sub-sections h3 {
+    text-align: center;
+    font-size: 1.8em;
+    color: var(--accent-color);
+    margin-top: 80px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.sub-sections h3::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background-color: var(--accent-color);
+}
+
+.sub-sections ul {
+    list-style: none;
+    padding: 0;
+    margin-left: 20px;
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+}
+
+.sub-sections ul li {
+    margin-bottom: 15px;
+    padding-left: 20px;
+    position: relative;
+}
+.sub-sections ul li::before {
+    content: '•';
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+}
+
+.tags-list {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 60px;
+}
+.tags-list span {
+    display: inline-block;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    color: var(--light-text-color);
+}
+
+
+/* Experiences Section */
+.experiences-section .experience-item {
+    display: flex;
+    margin-bottom: 60px;
+    position: relative;
+}
+
+.experiences-section .experience-item:last-child {
+    margin-bottom: 0;
+}
+
+.experience-date {
+    flex: 0 0 150px; /* 日期固定宽度 */
+    font-family: var(--primary-font-en);
+    font-size: 1.1em;
+    color: var(--light-text-color);
+    padding-right: 30px;
+    text-align: right;
+    border-right: 1px solid var(--border-color); /* 时间轴线 */
+    position: relative;
+}
+
+.experience-date::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    border: 2px solid var(--background-color); /* 中间的点 */
+}
+
+.experience-details {
+    flex: 1;
+    padding-left: 30px;
+}
+
+.experience-details h3 {
+    font-family: var(--primary-font-cn);
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+
+.experience-details h4 {
+    font-family: var(--primary-font-cn);
+    font-size: 1.1em;
+    color: var(--light-text-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.experience-details p {
+    margin-bottom: 10px;
+}
+
+
+/* Contact Section */
+.contact-section {
+    text-align: center;
+    padding-bottom: 100px;
+}
+
+.contact-section p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.contact-section a {
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.contact-section .social-links img {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+    transition: transform 0.3s ease;
+}
+
+.contact-section .social-links img:hover {
+    transform: translateY(-5px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        justify-content: flex-start; /* 小屏幕顶部对齐 */
+        align-items: center;
+        padding: 5vw;
+        height: auto;
+        position: relative; /* 小屏幕取消固定定位，让内容从顶部开始 */
+    }
+
+    .main-header .logo {
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .main-nav ul {
+        flex-direction: row; /* 小屏幕导航可以横向排列 */
+        flex-wrap: wrap; /* 自动换行 */
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .main-nav ul li {
+        margin: 0 10px 10px 10px; /* 调整间距 */
+    }
+
+    .image-carousel {
+        height: 50vh; /* 小屏幕图片区域高度减小 */
+        width: 90vw;
+        margin-top: 30px;
+    }
+
+    .content-area {
+        padding: 50px 5vw;
+        padding-top: 50px; /* 小屏幕内容从顶部开始 */
+    }
+
+    .content-section h2 {
+        font-size: 2em;
+    }
+
+    .about-details {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .experience-item {
+        flex-direction: column;
+        margin-left: 20px; /* 留出时间轴线位置 */
+    }
+
+    .experience-date {
+        text-align: left;
+        border-right: none;
+        padding-right: 0;
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 20px;
+    }
+    .experience-date::after {
+        left: 0;
+        right: auto;
+        top: 5px;
+    }
+
+    .experience-details {
+        padding-left: 20px;
+        border-left: 1px solid var(--border-color); /* 竖线 */
+        padding-bottom: 20px;
+    }
+    .experience-details:last-of-type {
+        padding-bottom: 0;
+    }
+}
