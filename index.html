@@ -8,150 +8,166 @@
     <!-- Google Fonts 引入 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700&family=Roboto+Flex:wght@700&display=swap" rel="stylesheet">
-    <!-- 统一使用 bold 700，如果 light 300 无法满足加粗需求 -->
+    <!-- Noto Sans SC (中文) - 300 light 和 700 bold -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;700&display=swap" rel="stylesheet">
+    <!-- Roboto Flex (英文) - 300 light 和 700 bold -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@300;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="site-container">
+<body class="template-index">
 
-        <!-- 名字 (右上角固定) -->
-        <div class="fixed-name">
-            <a href="#" class="brand-name">
-                许志豪 <br> Ziohsu
-            </a>
-        </div>
+    <!-- 预加载器 -->
+    <div id="loader"></div>
 
-        <!-- 导航 (居中) -->
-        <nav class="main-nav-center">
-            <ul>
-                <li><a href="#about" class="nav-link">About me / 关于我</a></li>
-                <li><a href="#experiences" class="nav-link">Experiences / 经历</a></li>
-                <li><a href="projects.html" class="nav-link">Project / 作品集</a></li>
-                <li><a href="likes.html" class="nav-link">The things I like / 我喜欢</a></li>
-                <li><a href="#contact" class="nav-link">Contact me / 联系我</a></li>
-            </ul>
-        </nav>
+    <div class="content">
+        <header id="header">
+            <!-- 左上角名字/Logo -->
+            <div class="logo">
+                <a href="#hero-intro" class="brand-name">
+                    许志豪 <br> Ziohsu
+                </a>
+            </div>
 
-        <div class="content-wrapper">
-            <!-- 左侧内容区域 -->
-            <div class="text-content-column">
-                <!-- 首页介绍 (Hero Section) -->
-                <section id="hero-intro" class="content-section first-section">
-                    <div class="intro-text">
-                        <p class="description">
-                            从事时尚潮流内容相关工作近6年,经历媒体与品牌两端。曾为始祖鸟、Louis Vuitton、Porsche 等品牌提供文案支持或线下活动支持，目前在女装品牌负责内容与视觉表达，关注品牌气质的建立以及服装与年轻生活生活方式之间的连接。
-                        </p>
-                    </div>
-                </section>
+            <!-- 居中导航 -->
+            <div class="main-menu">
+                <ul>
+                    <li><a class="nav-link" href="#about">About me / 关于我</a></li>
+                    <li><a class="nav-link" href="#experiences">Experiences / 经历</a></li>
+                    <li><a class="nav-link" href="projects.html">Project / 作品集</a></li>
+                    <li><a class="nav-link" href="likes.html">The things I like / 我喜欢</a></li>
+                    <li><a class="nav-link" href="#contact">Contact me / 联系我</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <div class="main-section-wrapper">
+            <!-- 左侧滚动区域 (承载图片滚动指示器 / 标题) -->
+            <div class="home-list">
+                <!-- 这里不需要具体的图片，只是锚点文本，它们会触发右侧图片切换 -->
+                <!-- 每个 div.hi 对应右侧的一个图片/视频 -->
+                <div class="hi"><a data-target="scrollie-1"></a></div> <!-- 对应图片1 -->
+                <div class="hi"><a data-target="scrollie-2"></a></div> <!-- 对应图片2 -->
+                <div class="hi"><a data-target="scrollie-3"></a></div> <!-- 对应图片3 -->
+                <div class="hi"><a data-target="scrollie-4"></a></div> <!-- 对应图片4 -->
+                <div class="hi"><a data-target="scrollie-5"></a></div> <!-- 对应图片5 -->
+                <div class="hi"><a data-target="scrollie-6"></a></div> <!-- 对应图片6 -->
+                <div class="hi"><a data-target="scrollie-7"></a></div> <!-- 对应视频7 -->
+                <div class="hi"><a data-target="scrollie-8"></a></div> <!-- 对应图片8 -->
+                <div class="hi"><a data-target="scrollie-9"></a></div> <!-- 对应图片9 -->
+                <div class="hi"><a data-target="scrollie-10"></a></div> <!-- 对应图片10 -->
+
+                <!-- 文本内容锚点，对应下方的 about, experiences 等 -->
+                <div class="hi"><a data-target="about-section">About me</a></div>
+                <div class="hi"><a data-target="experiences-section">Experiences</a></div>
+                <div class="hi"><a data-target="contact-section">Contact me</a></div>
+                <!-- 确保这里有足够多的 hi 元素，才能让滚动事件触发图片切换 -->
+                <!-- 理论上，你需要大约 10 个 hi 对应 10 个图片，再加 3 个 hi 对应 3 个文本区块 -->
+                <!-- 每一个 hi 都会“撑起”一个滚动区域，以触发右侧图片或文本内容的显示 -->
+                <!-- 如果你的图片少，可以把多余的 hi 移除，或者让文本区块也拥有一个 hi -->
+                <!-- 这里我们使用 10 个 hi 对应图片，然后文本区块再各自有自己的 hi 来控制滚动触发 -->
+                <div class="hi empty-placeholder"></div>
+                <div class="hi empty-placeholder"></div>
+                <div class="hi empty-placeholder"></div>
+                <div class="hi empty-placeholder"></div>
+                <div class="hi empty-placeholder"></div>
+            </div>
+
+            <!-- 右侧滚动区域 (承载图片和文字内容) -->
+            <div class="home-list-scroll">
+                <!-- 首页介绍 (Hero Section) - 对应图片滚动后的文字区域 -->
+                <div class="scrollie content-text-block" id="hero-intro">
+                    <p class="description">
+                        从事时尚潮流内容相关工作近6年,经历媒体与品牌两端。曾为始祖鸟、Louis Vuitton、Porsche 等品牌提供文案支持或线下活动支持，目前在女装品牌负责内容与视觉表达，关注品牌气质的建立以及服装与年轻生活生活方式之间的连接。
+                    </p>
+                </div>
+                
+                <!-- 所有的图片/视频都放在这里，它们都是 sticky 的 -->
+                <div class="scrollie media-item" id="scrollie-1">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-1.jpeg" alt="个人作品1">
+                </div>
+                <div class="scrollie media-item" id="scrollie-2">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-2.jpeg" alt="个人审美2">
+                </div>
+                <div class="scrollie media-item" id="scrollie-3">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-3.png" alt="个人作品3">
+                </div>
+                <div class="scrollie media-item" id="scrollie-4">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-4.jpg" alt="个人审美4">
+                </div>
+                <div class="scrollie media-item" id="scrollie-5">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-5.jpg" alt="项目作品5">
+                </div>
+                <div class="scrollie media-item" id="scrollie-6">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-6.jpg" alt="个人审美6">
+                </div>
+                <div class="scrollie media-item" id="scrollie-7">
+                    <video autoplay loop muted playsinline src="https://github.com/xusanle/whoami/releases/download/video/video77.mp4"></video>
+                </div>
+                <div class="scrollie media-item" id="scrollie-8">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-8.JPG" alt="个人作品8">
+                </div>
+                <div class="scrollie media-item" id="scrollie-9">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-9.jpg" alt="个人审美9">
+                </div>
+                <div class="scrollie media-item" id="scrollie-10">
+                    <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-10.JPG" alt="项目作品10">
+                </div>
 
                 <!-- About Me / 关于我 -->
-                <section id="about" class="content-section">
+                <div class="scrollie content-text-block" id="about">
                     <h2>About me / 关于我</h2>
-                    <div class="about-details">
-                        <div class="about-info-card">
-                            <h3>基本信息</h3>
-                            <p>27岁</p>
-                            <p>6年经验</p>
-                            <p>15521172275</p>
-                            <p><a href="mailto:hsuzio@foxmail.com">hsuzio@foxmail.com</a></p>
-                        </div>
-
-                        <div class="about-info-card">
-                            <h3>Education / 教育背景</h3>
-                            <p><strong>2017.9-2021.6</strong></p>
-                            <p>华南农业大学</p>
-                            <p>汉语言文学·本科</p>
-                        </div>
+                    <p>
+                        从事时尚潮流内容相关工作近6年，经历媒体与品牌两端，致力于品牌内容与视觉表达。
+                    </p>
+                    <h3>Skills / 技能特长</h3>
+                    <ul>
+                        <li>内容与文案：长内容写作、品牌文案、社交媒体表达</li>
+                        <li>品牌表达与视觉执行：参与品牌风格梳理，配合拍摄与造型，统一内容与视觉调性</li>
+                        <li>内容策划与趋势转化：选题策划、Campaign支持，跟进趋势并转化为内容方向</li>
+                    </ul>
+                    <h3>Cores / 核心优势</h3>
+                    <ul>
+                        <li>在时尚潮流内容领域拥有丰富经验，擅长从品牌策略到具体内容执行的全链路操作，具备强大的文字功底和视觉策划能力。</li>
+                    </ul>
+                    <h3>Tags / 标签</h3>
+                    <div class="tags-list">
+                        <span>#时尚潮流</span><span>#内容创作</span><span>#品牌文案</span><span>#视觉表达</span><span>#活动策划</span><span>#社交媒体</span><span>#趋势洞察</span>
                     </div>
-
-                    <div class="sub-sections">
-                        <h3 id="skills-section">Skills / 技能特长</h3>
-                        <ul>
-                            <li>**内容与文案**：长内容写作、品牌文案、社交媒体表达</li>
-                            <li>**品牌表达与视觉执行**：参与品牌风格梳理，配合拍摄与造型，统一内容与视觉调性</li>
-                            <li>**内容策划与趋势转化**：选题策划、Campaign支持，跟进趋势并转化为内容方向</li>
-                        </ul>
-
-                        <h3 id="cores-section">Cores / 核心优势</h3>
-                        <ul>
-                            <li>擅长把复杂趋势整理成清晰、好读的内容。</li>
-                            <li>根据品牌调性完成文案撰写，在保证信息准确的基础上提升内容的传播性。</li>
-                            <li>关注品牌气质的建立以及服装与年轻生活方式之间的连接。</li>
-                        </ul>
-
-                        <h3 id="tags-section">Tags / 标签</h3>
-                        <div class="tags-list">
-                            <span>#时尚潮流</span>
-                            <span>#内容创作</span>
-                            <span>#品牌文案</span>
-                            <span>#视觉表达</span>
-                            <span>#活动策划</span>
-                            <span>#社交媒体</span>
-                            <span>#趋势洞察</span>
-                        </div>
-                    </div>
-                    <!-- 个人简历照片 -->
-                    <div class="about-image">
-                        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-%E7%AE%80%E5%8E%86%E7%85%A7%E7%89%87.png" alt="许志豪头像" class="profile-avatar">
-                    </div>
-                </section>
+                </div>
 
                 <!-- Experiences / 经历 -->
-                <section id="experiences" class="content-section">
+                <div class="scrollie content-text-block" id="experiences">
                     <h2>Experiences / 经历</h2>
                     <div class="experience-item">
                         <div class="experience-date">2020.10 - 2025.3</div>
                         <div class="experience-details">
-                            <h3>时尚专题编辑</h3>
-                            <h4>广州潮库信息科技有限公司</h4>
-                            <p>**内容创作**：长期跟进海外流行趋势，年均输出近百篇长内容(约2000字/篇)，涵盖先锋时尚、球鞋、户外等方向，主要发布于「潮库」公众号。擅长把复杂趋势整理成清晰、好读的内容，单篇内容最高阅读量 10w+。</p>
-                            <p>**商业文案支持**：参与始祖鸟、PUMA、沃尔沃等品牌项目，根据品牌调性完成文案撰写，在保证信息准确的基础上提升内容的传播性。</p>
-                            <p>**拍摄执行/活动策划**：参与 LV Art Trainer、FILA 项目拍摄及保时捷75周年线下活动，负责现场协调与执行支持；根据实际情况及时调整细节，保证项目顺利推进和最终呈现效果。</p>
+                            <h3>广州潮库信息科技有限公司</h3>
+                            <h4>时尚专题编辑</h4>
+                            <p>负责：内容创作、商业文案支持、拍摄执行/活动策划。</p>
                         </div>
                     </div>
-
                     <div class="experience-item">
                         <div class="experience-date">2025.3 - 至今</div>
                         <div class="experience-details">
-                            <h3>创意策划</h3>
-                            <h4>广州团月半服装设计有限公司</h4>
-                            <p>**创意拍摄策划**：参与品牌拍摄的前期构思与执行，根据主题和单品特点提出画面方向与基础分镜，协助落地拍摄方案。</p>
-                            <p>**社交媒体运营**：负责小红书内容策划与发布。根据 immune system 与YLAMBS 的不同定位调整表达方式，并通过日常互动优化内容节奏。</p>
-                            <p>**视觉素材整理**：对拍摄素材进行二次整理，根据不同平台调整图文与视频排版，在统一风格下提升适配度。</p>
-                            <p>**趋势观察与内容优化**：持续关注时尚与青年文化内容，整理案例作为参考；结合基础数据反馈，对内容方向进行调整。</p>
+                            <h3>广州团月半服装设计有限公司</h3>
+                            <h4>创意策划</h4>
+                            <p>负责：创意拍摄策划、社交媒体运营、视觉素材整理、趋势观察与内容优化。</p>
                         </div>
                     </div>
-                </section>
+                </div>
 
                 <!-- Contact Me / 联系我 -->
-                <section id="contact" class="content-section">
+                <div class="scrollie content-text-block" id="contact">
                     <h2>Contact me / 联系我</h2>
                     <p>Email: <a href="mailto:hsuzio@foxmail.com">hsuzio@foxmail.com</a></p>
                     <div class="social-links">
                         <!-- Add social media links here -->
                     </div>
-                </section>
-            </div>
-
-            <!-- 右侧固定图片区域 -->
-            <div class="sticky-image-column">
-                <div class="image-gallery">
-                    <!-- 每个 data-src 和 data-type 用于 JS 加载 -->
-                    <div class="gallery-item active" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-1.jpeg" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-2.jpeg" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-3.png" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-4.jpg" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-5.jpg" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-6.jpg" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://github.com/xusanle/whoami/releases/download/video/video77.mp4" data-type="video"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-8.JPG" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-9.jpg" data-type="image"></div>
-                    <div class="gallery-item" data-src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-10.JPG" data-type="image"></div>
                 </div>
             </div>
         </div>
     </div>
-
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- 引入 jQuery -->
     <script src="script.js"></script>
 </body>
 </html>
