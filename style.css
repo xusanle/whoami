@@ -1,60 +1,212 @@
-(function () {
-  'use strict';
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>许志豪 Zio Hsu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;700&family=Roboto+Flex:opsz,wght@8..144,300;8..144,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-  const panel = document.getElementById('right-panel');
-  const navLinks = document.querySelectorAll('[data-target]');
-  const sections = document.querySelectorAll('section[id]');
+  <!-- =====================
+       LEFT FIXED COLUMN
+       Logo top · Nav middle · Contact bottom (black strip)
+  ===================== -->
+  <aside class="left-panel">
 
-  // ── 1. Click nav → scroll right panel to section ──
-  navLinks.forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      const id = this.getAttribute('data-target');
-      const target = document.getElementById(id);
-      if (!target) return;
-      e.preventDefault();
+    <div class="logo">
+      <img src="https://raw.githubusercontent.com/xusanle/whoami/main/11%E6%9C%AA%E6%A0%87%E9%A2%98-1.png" alt="许志豪 Zio Hsu" class="logo-img" />
+    </div>
 
-      // offsetTop is relative to right-panel's scroll container
-      const targetTop = target.offsetTop - 32;
-      panel.scrollTo({ top: targetTop, behavior: 'smooth' });
-    });
-  });
+    <!-- Contact: black block pinned to bottom of left panel -->
+    <div class="contact-block">
+      <span class="contact-label">Contact me</span>
+      <a href="mailto:hsuzio@foxmail.com" class="contact-email">hsuzio@foxmail.com</a>
+    </div>
 
-  // ── 2. Active nav on scroll ──
-  function updateActive() {
-    const scrolled = panel.scrollTop + panel.clientHeight * 0.35;
-    let current = null;
+  </aside>
 
-    sections.forEach(function (s) {
-      if (s.offsetTop <= scrolled) current = s.id;
-    });
+  <!-- =====================
+       MIDDLE FIXED COLUMN
+       Nav, vertically centred, text left-aligned
+  ===================== -->
+  <div class="mid-panel">
+    <nav class="main-nav">
+      <div class="nav-section">
+        <a href="#about" class="nav-primary" data-target="about">About me <span class="nav-zh">/ 关于我</span></a>
+        <div class="nav-sub">
+          <a href="#skills" class="nav-secondary" data-target="skills">Skills <span class="nav-zh">/ 技能特长</span></a>
+          <a href="#cores" class="nav-secondary" data-target="cores">Cores <span class="nav-zh">/ 核心优势</span></a>
+          <a href="#tags" class="nav-secondary" data-target="tags">Tags <span class="nav-zh">/ 标签</span></a>
+        </div>
+      </div>
 
-    navLinks.forEach(function (link) {
-      link.classList.toggle('active', link.getAttribute('data-target') === current);
-    });
-  }
+      <div class="nav-section">
+        <a href="#experiences" class="nav-primary" data-target="experiences">Experiences <span class="nav-zh">/ 经历</span></a>
+        <div class="nav-sub">
+          <a href="#work" class="nav-secondary" data-target="work">Work <span class="nav-zh">/ 工作经历</span></a>
+          <a href="#education" class="nav-secondary" data-target="education">Education <span class="nav-zh">/ 教育背景</span></a>
+        </div>
+      </div>
 
-  panel.addEventListener('scroll', updateActive, { passive: true });
+      <div class="nav-section">
+        <a href="#" class="nav-primary nav-external">Project <span class="nav-zh">/ 作品集</span></a>
+        <div class="nav-sub">
+          <a href="#" class="nav-secondary nav-external">Writing <span class="nav-zh">/ 文字</span></a>
+          <a href="#" class="nav-secondary nav-external">Graphic <span class="nav-zh">/ 图像</span></a>
+          <a href="#" class="nav-secondary nav-external">Video <span class="nav-zh">/ 视频</span></a>
+        </div>
+      </div>
 
-  // ── 3. Intersection observer → fade in ──
-  const fadeEls = document.querySelectorAll('.media-item, .content-block');
+      <div class="nav-section">
+        <a href="#" class="nav-primary nav-external">The things I like <span class="nav-zh">/ 我喜欢</span></a>
+      </div>
+    </nav>
+  </div>
 
-  const io = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          io.unobserve(entry.target);
-        }
-      });
-    },
-    { root: panel, threshold: 0.05 }
-  );
+  <!-- =====================
+       RIGHT SCROLLABLE COLUMN
+       ~40% viewport width · Images then text
+  ===================== -->
+  <main class="right-panel" id="right-panel">
 
-  fadeEls.forEach(function (el) { io.observe(el); });
+    <div class="image-strip">
 
-  // ── 4. Stagger image entrance ──
-  document.querySelectorAll('.image-strip .media-item').forEach(function (el, i) {
-    el.style.transitionDelay = (i * 0.055) + 's';
-  });
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-1.jpeg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-2.jpeg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-3.png" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-4.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-5.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-6.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item media-item--video">
+        <video src="https://github.com/xusanle/whoami/releases/download/video/video77.mp4"
+               autoplay muted loop playsinline></video>
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-8.JPG" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-9.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-10.JPG" alt="" loading="lazy" />
+      </div>
 
-})();
+    </div>
+
+    <!-- TEXT CONTENT -->
+    <div class="content-section">
+
+      <section id="about" class="content-block">
+        <h2 class="section-title">About me <span class="section-title-zh">/ 关于我</span></h2>
+        <p class="intro-text">
+          从事时尚潮流内容相关工作近六年，经历媒体与品牌两端。<br />
+          喜欢视觉叙事，喜欢看不同品牌如何通过图像表达内核。
+        </p>
+      </section>
+
+      <section id="skills" class="content-block">
+        <h3 class="sub-title">Skills <span class="sub-title-zh">/ 技能特长</span></h3>
+        <ul class="skill-list">
+          <li>长内容写作 Long-form Writing</li>
+          <li>品牌文案 Brand Copywriting</li>
+          <li>社交媒体表达 Social Media Content</li>
+          <li>拍摄执行与现场协调 Shoot Production</li>
+          <li>视觉素材整理与排版 Visual Editing & Layout</li>
+        </ul>
+      </section>
+
+      <section id="cores" class="content-block">
+        <h3 class="sub-title">Cores <span class="sub-title-zh">/ 核心优势</span></h3>
+        <ul class="core-list">
+          <li>
+            <span class="core-label">趋势转化</span>
+            长期跟进海外流行趋势，将复杂信息整理为清晰、好读的内容，单篇最高阅读量 10w+。
+          </li>
+          <li>
+            <span class="core-label">品牌气质建立</span>
+            参与品牌风格梳理，配合拍摄与造型，统一内容与视觉调性。
+          </li>
+          <li>
+            <span class="core-label">文字与视觉并行</span>
+            在文案与画面之间切换，理解二者的逻辑，也理解它们的边界。
+          </li>
+        </ul>
+      </section>
+
+      <section id="tags" class="content-block">
+        <h3 class="sub-title">Tags <span class="sub-title-zh">/ 标签</span></h3>
+        <div class="tag-list">
+          <span>时尚</span><span>潮流文化</span><span>内容创作</span>
+          <span>品牌文案</span><span>创意策划</span><span>视觉执行</span>
+          <span>社交媒体</span><span>趋势观察</span>
+        </div>
+      </section>
+
+      <section id="experiences" class="content-block content-block--divider">
+        <h2 class="section-title">Experiences <span class="section-title-zh">/ 经历</span></h2>
+      </section>
+
+      <section id="work" class="content-block">
+        <h3 class="sub-title">Work <span class="sub-title-zh">/ 工作经历</span></h3>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <span class="exp-date">2025.03 — 至今</span>
+            <span class="exp-company">广州团月半服装设计有限公司</span>
+          </div>
+          <p class="exp-role">创意策划</p>
+          <ul class="exp-detail">
+            <li>参与品牌拍摄前期构思与执行，根据主题提出画面方向与基础分镜，协助落地拍摄方案。</li>
+            <li>负责 immune system 与 YLAMBS 小红书内容策划与发布，根据不同品牌定位调整表达方式。</li>
+            <li>对拍摄素材进行二次整理，根据平台调整图文与视频排版，统一风格下提升适配度。</li>
+            <li>持续关注时尚与青年文化内容，结合数据反馈调整内容方向。</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <span class="exp-date">2020.10 — 2025.03</span>
+            <span class="exp-company">广州潮库信息科技有限公司</span>
+          </div>
+          <p class="exp-role">时尚专题编辑</p>
+          <ul class="exp-detail">
+            <li>长期跟进海外流行趋势，年均输出近百篇长内容（约2000字/篇），涵盖先锋时尚、球鞋、户外等方向，发布于「潮库」公众号，单篇最高阅读量 10w+。</li>
+            <li>参与始祖鸟、PUMA、沃尔沃等品牌项目，根据品牌调性完成文案撰写。</li>
+            <li>参与 LV Art Trainer、FILA 项目拍摄及保时捷75周年线下活动，负责现场协调与执行支持。</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="education" class="content-block">
+        <h3 class="sub-title">Education <span class="sub-title-zh">/ 教育背景</span></h3>
+        <div class="exp-item">
+          <div class="exp-header">
+            <span class="exp-date">2017.09 — 2021.06</span>
+            <span class="exp-company">华南农业大学</span>
+          </div>
+          <p class="exp-role">汉语言文学 · 本科</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
