@@ -1,101 +1,60 @@
-/* ===========================
-   script.js — Zio Hsu Portfolio
-=========================== */
-
 (function () {
   'use strict';
 
-  const rightPanel = document.querySelector('.right-panel');
+  const panel = document.getElementById('right-panel');
   const navLinks = document.querySelectorAll('[data-target]');
+  const sections = document.querySelectorAll('section[id]');
 
-  // ──────────────────────────────────────────
-  // 1. SMOOTH SCROLL TO SECTION
-  //    Clicks on nav links scroll the right panel
-  //    to the corresponding section
-  // ──────────────────────────────────────────
+  // ── 1. Click nav → scroll right panel to section ──
   navLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {
-      const targetId = this.getAttribute('data-target');
-      const targetEl = document.getElementById(targetId);
-      if (!targetEl) return;
-
+      const id = this.getAttribute('data-target');
+      const target = document.getElementById(id);
+      if (!target) return;
       e.preventDefault();
 
-      // On mobile, body scrolls; on desktop, rightPanel scrolls
-      const scrollContainer = window.innerWidth <= 768 ? window : rightPanel;
-      const offset = targetEl.getBoundingClientRect().top;
-
-      if (window.innerWidth <= 768) {
-        window.scrollBy({ top: offset - 16, behavior: 'smooth' });
-      } else {
-        rightPanel.scrollBy({ top: offset - 32, behavior: 'smooth' });
-      }
+      // offsetTop is relative to right-panel's scroll container
+      const targetTop = target.offsetTop - 32;
+      panel.scrollTo({ top: targetTop, behavior: 'smooth' });
     });
   });
 
-  // ──────────────────────────────────────────
-  // 2. ACTIVE NAV STATE
-  //    Highlight current nav item as user scrolls
-  // ──────────────────────────────────────────
-  const sections = document.querySelectorAll('section[id], .content-block[id]');
+  // ── 2. Active nav on scroll ──
+  function updateActive() {
+    const scrolled = panel.scrollTop + panel.clientHeight * 0.35;
+    let current = null;
 
-  function updateActiveNav() {
-    const panelScrollTop = rightPanel.scrollTop;
-    const panelHeight = rightPanel.clientHeight;
-
-    let currentId = null;
-
-    sections.forEach(function (section) {
-      const sectionTop = section.offsetTop;
-      if (panelScrollTop >= sectionTop - panelHeight * 0.4) {
-        currentId = section.id;
-      }
+    sections.forEach(function (s) {
+      if (s.offsetTop <= scrolled) current = s.id;
     });
 
     navLinks.forEach(function (link) {
-      const target = link.getAttribute('data-target');
-      if (target === currentId) {
-        link.classList.add('active');
-      } else {
-        link.classList.remove('active');
-      }
+      link.classList.toggle('active', link.getAttribute('data-target') === current);
     });
   }
 
-  rightPanel.addEventListener('scroll', updateActiveNav);
+  panel.addEventListener('scroll', updateActive, { passive: true });
 
-  // ──────────────────────────────────────────
-  // 3. INTERSECTION OBSERVER — FADE IN
-  //    Elements fade up as they enter the viewport
-  // ──────────────────────────────────────────
+  // ── 3. Intersection observer → fade in ──
   const fadeEls = document.querySelectorAll('.media-item, .content-block');
 
-  const observer = new IntersectionObserver(
+  const io = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+          io.unobserve(entry.target);
         }
       });
     },
-    {
-      root: rightPanel,
-      threshold: 0.08,
-    }
+    { root: panel, threshold: 0.05 }
   );
 
-  fadeEls.forEach(function (el) {
-    observer.observe(el);
-  });
+  fadeEls.forEach(function (el) { io.observe(el); });
 
-  // ──────────────────────────────────────────
-  // 4. STAGGER FIRST VISIBLE ELEMENTS
-  //    So the first images don't all pop in at once
-  // ──────────────────────────────────────────
-  const firstItems = document.querySelectorAll('.image-strip .media-item');
-  firstItems.forEach(function (el, i) {
-    el.style.transitionDelay = (i * 0.06) + 's';
+  // ── 4. Stagger image entrance ──
+  document.querySelectorAll('.image-strip .media-item').forEach(function (el, i) {
+    el.style.transitionDelay = (i * 0.055) + 's';
   });
 
 })();
