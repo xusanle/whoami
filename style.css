@@ -48,13 +48,14 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;   ← 加上这行
   z-index: 20;
   background: var(--white);
 }
 
 /* LOGO — top, image version */
 .logo {
-  padding: 20px 20px 0 20px;   /* 四周留一点呼吸空间，不贴死 */
+  padding: 20px 12px 0 12px;
   flex-shrink: 0;
   line-height: 0;
 }
@@ -87,11 +88,7 @@ body {
 
 /* NAV — in mid panel, centred vertically, text left-aligned */
 .main-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-  width: 100%;
-  max-width: 260px;
+  gap: 0;
 }
 
 .nav-section {
@@ -482,11 +479,8 @@ body {
     border-bottom: none;
   }
 
-  .mid-panel {
-    border-bottom: none;
-    padding: 40px 28px;
-    height: auto;
-    justify-content: flex-start;
+.mid-panel {
+  padding: 20px 40px 0 40px;
   }
 
   .right-panel {
