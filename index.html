@@ -11,15 +11,18 @@
 </head>
 <body>
 
-  <!-- LEFT PANEL: Logo + Nav -->
+  <!-- =====================
+       LEFT FIXED COLUMN
+       Logo top · Nav middle · Contact bottom (black strip)
+  ===================== -->
   <aside class="left-panel">
+
     <div class="logo">
       <span class="logo-zh">许志豪</span>
       <span class="logo-en">Zio Hsu</span>
     </div>
 
     <nav class="main-nav">
-
       <div class="nav-section">
         <a href="#about" class="nav-primary" data-target="about">About me <span class="nav-zh">/ 关于我</span></a>
         <div class="nav-sub">
@@ -49,73 +52,80 @@
       <div class="nav-section">
         <a href="#" class="nav-primary nav-external">The things I like <span class="nav-zh">/ 我喜欢</span></a>
       </div>
-
-      <div class="nav-section nav-contact">
-        <span class="nav-primary">Contact me <span class="nav-zh">/ 联系我</span></span>
-        <div class="nav-sub">
-          <a href="mailto:hsuzio@foxmail.com" class="nav-secondary nav-email">hsuzio@foxmail.com</a>
-        </div>
-      </div>
-
     </nav>
+
+    <!-- Contact: black block pinned to bottom of left panel -->
+    <div class="contact-block">
+      <span class="contact-label">Contact me</span>
+      <a href="mailto:hsuzio@foxmail.com" class="contact-email">hsuzio@foxmail.com</a>
+    </div>
+
   </aside>
 
-  <!-- RIGHT PANEL: Scrollable images + text content -->
-  <main class="right-panel">
+  <!-- =====================
+       MIDDLE FIXED COLUMN
+       Intro text, vertically centred, always visible
+  ===================== -->
+  <div class="mid-panel">
+    <div class="mid-intro">
+      <p>从事时尚潮流内容相关工作近六年，<br />经历媒体与品牌两端。</p>
+      <p>喜欢视觉叙事，喜欢看不同品牌<br />如何通过图像表达内核。</p>
+    </div>
+  </div>
 
-    <!-- IMAGE SECTION -->
+  <!-- =====================
+       RIGHT SCROLLABLE COLUMN
+       ~40% viewport width · Images then text
+  ===================== -->
+  <main class="right-panel" id="right-panel">
+
     <div class="image-strip">
 
       <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-1.jpeg" alt="" />
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-1.jpeg" alt="" loading="lazy" />
       </div>
-
       <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-2.jpeg" alt="" />
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-2.jpeg" alt="" loading="lazy" />
       </div>
-
-      <div class="media-item media-item--wide">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-3.png" alt="" />
-      </div>
-
       <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-4.jpg" alt="" />
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-3.png" alt="" loading="lazy" />
       </div>
-
-      <div class="media-item media-item--pair">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-5.jpg" alt="" />
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-6.jpg" alt="" />
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-4.jpg" alt="" loading="lazy" />
       </div>
-
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-5.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-6.jpg" alt="" loading="lazy" />
+      </div>
       <div class="media-item media-item--video">
-        <video src="https://github.com/xusanle/whoami/releases/download/video/video77.mp4" autoplay muted loop playsinline></video>
+        <video src="https://github.com/xusanle/whoami/releases/download/video/video77.mp4"
+               autoplay muted loop playsinline></video>
       </div>
-
       <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-8.JPG" alt="" />
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-8.JPG" alt="" loading="lazy" />
       </div>
-
-      <div class="media-item media-item--pair">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-9.jpg" alt="" />
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-10.JPG" alt="" />
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-9.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="media-item">
+        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-10.JPG" alt="" loading="lazy" />
       </div>
 
     </div>
 
-    <!-- TEXT CONTENT SECTION -->
+    <!-- TEXT CONTENT -->
     <div class="content-section">
 
-      <!-- ABOUT ME -->
       <section id="about" class="content-block">
         <h2 class="section-title">About me <span class="section-title-zh">/ 关于我</span></h2>
         <p class="intro-text">
           从事时尚潮流内容相关工作近六年，经历媒体与品牌两端。<br />
-          写字，也看图；做内容，也做画面。<br />
-          关注品牌如何说话，以及年轻人如何生活。
+          喜欢视觉叙事，喜欢看不同品牌如何通过图像表达内核。
         </p>
       </section>
 
-      <!-- SKILLS -->
       <section id="skills" class="content-block">
         <h3 class="sub-title">Skills <span class="sub-title-zh">/ 技能特长</span></h3>
         <ul class="skill-list">
@@ -127,7 +137,6 @@
         </ul>
       </section>
 
-      <!-- CORES -->
       <section id="cores" class="content-block">
         <h3 class="sub-title">Cores <span class="sub-title-zh">/ 核心优势</span></h3>
         <ul class="core-list">
@@ -146,27 +155,19 @@
         </ul>
       </section>
 
-      <!-- TAGS -->
       <section id="tags" class="content-block">
         <h3 class="sub-title">Tags <span class="sub-title-zh">/ 标签</span></h3>
         <div class="tag-list">
-          <span>时尚</span>
-          <span>潮流文化</span>
-          <span>内容创作</span>
-          <span>品牌文案</span>
-          <span>创意策划</span>
-          <span>视觉执行</span>
-          <span>社交媒体</span>
-          <span>趋势观察</span>
+          <span>时尚</span><span>潮流文化</span><span>内容创作</span>
+          <span>品牌文案</span><span>创意策划</span><span>视觉执行</span>
+          <span>社交媒体</span><span>趋势观察</span>
         </div>
       </section>
 
-      <!-- EXPERIENCES -->
-      <section id="experiences" class="content-block content-block--experience">
+      <section id="experiences" class="content-block content-block--divider">
         <h2 class="section-title">Experiences <span class="section-title-zh">/ 经历</span></h2>
       </section>
 
-      <!-- WORK -->
       <section id="work" class="content-block">
         <h3 class="sub-title">Work <span class="sub-title-zh">/ 工作经历</span></h3>
 
@@ -198,10 +199,9 @@
         </div>
       </section>
 
-      <!-- EDUCATION -->
       <section id="education" class="content-block">
         <h3 class="sub-title">Education <span class="sub-title-zh">/ 教育背景</span></h3>
-        <div class="edu-item">
+        <div class="exp-item">
           <div class="exp-header">
             <span class="exp-date">2017.09 — 2021.06</span>
             <span class="exp-company">华南农业大学</span>
@@ -210,7 +210,7 @@
         </div>
       </section>
 
-    </div><!-- end content-section -->
+    </div>
   </main>
 
   <script src="script.js"></script>
