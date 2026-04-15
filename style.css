@@ -54,16 +54,15 @@ body {
 
 /* LOGO — top, image version */
 .logo {
-  padding: 0;
+  padding: 12px 12px 0 12px;   /* 四周留一点呼吸空间，不贴死 */
   flex-shrink: 0;
-  flex: 1;
   line-height: 0;
 }
 
 .logo-img {
   display: block;
-  width: 100%;        /* fills the 180px left column */
-  max-height: 80px;   /* keeps it close to the original two-line text height */
+  width: 100%;          /* 撑满左栏宽度（减去padding后） */
+  height: auto;         /* 高度按图片比例自动跟随 */
   object-fit: contain;
   object-position: top left;
 }
