@@ -1,492 +1,60 @@
-/* ===========================
-   CSS VARIABLES
-=========================== */
-:root {
-  --col-left:    180px;
-  --col-mid:     calc(55vw - 180px); /* fills space between left and right */
-  --col-right:   45vw;               /* right panel = ~45% of viewport */
-  --font-zh:     'Noto Sans SC', sans-serif;
-  --font-en:     'Roboto Flex', sans-serif;
-  --black:       #111;
-  --white:       #fff;
-  --mid-gray:    #888;
-  --light-line:  #e0e0e0;
-}
+(function () {
+  'use strict';
 
-/* ===========================
-   RESET & BASE
-=========================== */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  const panel = document.getElementById('right-panel');
+  const navLinks = document.querySelectorAll('[data-target]');
+  const sections = document.querySelectorAll('section[id]');
 
-html {
-  font-size: 15px; /* base size — slightly larger than before */
-}
+  // ── 1. Click nav → scroll right panel to section ──
+  navLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      const id = this.getAttribute('data-target');
+      const target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
 
-body {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-  background: var(--white);
-  color: var(--black);
-  font-family: var(--font-en), var(--font-zh);
-  font-weight: 300;
-  -webkit-font-smoothing: antialiased;
-}
+      // offsetTop is relative to right-panel's scroll container
+      const targetTop = target.offsetTop - 32;
+      panel.scrollTo({ top: targetTop, behavior: 'smooth' });
+    });
+  });
 
-/* ===========================
-   LEFT PANEL  (fixed, 220px)
-=========================== */
-.left-panel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: var(--col-left);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  z-index: 20;
-  background: var(--white);
-}
+  // ── 2. Active nav on scroll ──
+  function updateActive() {
+    const scrolled = panel.scrollTop + panel.clientHeight * 0.35;
+    let current = null;
 
-/* LOGO — top */
-.logo {
-  padding: 0;
-  flex-shrink: 0;
-  flex: 1;
-}
+    sections.forEach(function (s) {
+      if (s.offsetTop <= scrolled) current = s.id;
+    });
 
-.logo-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-}
-
-/* placeholder — moved above with nav */
-
-/* NAV — in mid panel, top-aligned, text left-aligned */
-.main-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
-  width: 100%;
-  max-width: 260px;
-}
-
-.mid-panel {
-  position: fixed;
-  top: 0;
-  left: var(--col-left);
-  width: var(--col-mid);
-  height: 100vh;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 40px 40px 0 40px;
-  z-index: 10;
-  background: var(--white);
-}
-
-.nav-section {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.nav-primary {
-  font-family: var(--font-en);
-  font-weight: 300;
-  font-size: 1.05rem;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  color: var(--black);
-  line-height: 1.6;
-  display: inline-block;
-  transition: opacity 0.15s;
-}
-.nav-primary .nav-zh {
-  font-weight: 300;
-}
-
-.nav-primary:hover,
-.nav-primary.active {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.nav-external {
-  color: var(--mid-gray);
-}
-.nav-external:hover {
-  color: var(--mid-gray);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.nav-zh {
-  font-family: var(--font-zh);
-  font-weight: 300;
-}
-
-.nav-sub {
-  padding-left: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.nav-secondary {
-  font-family: var(--font-en);
-  font-weight: 300;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  text-decoration: none;
-  color: var(--black);
-  line-height: 1.8;
-  display: inline-block;
-}
-.nav-secondary .nav-zh {
-  font-family: var(--font-zh);
-}
-
-.nav-secondary:hover,
-.nav-secondary.active {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.nav-secondary.nav-external {
-  color: var(--mid-gray);
-}
-.nav-secondary.nav-external:hover {
-  color: var(--mid-gray);
-}
-
-/* CONTACT BLOCK — black strip pinned to bottom */
-.contact-block {
-  flex-shrink: 0;
-  background: var(--black);
-  color: var(--white);
-  padding: 24px 28px 28px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.contact-label {
-  font-family: var(--font-en);
-  font-weight: 300;
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  line-height: 1.15;
-  color: var(--white);
-}
-
-.contact-email {
-  font-family: var(--font-en);
-  font-weight: 300;
-  font-size: 0.76rem;
-  color: rgba(255,255,255,0.65);
-  text-decoration: none;
-  letter-spacing: 0.01em;
-  line-height: 1.5;
-  transition: color 0.15s;
-}
-.contact-email:hover {
-  color: var(--white);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-
-
-/* ===========================
-   RIGHT PANEL  (scrollable, 40vw)
-=========================== */
-.right-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: var(--col-right);
-  height: 100vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background: var(--white);
-  /* hide scrollbar */
-  scrollbar-width: none;
-}
-.right-panel::-webkit-scrollbar { display: none; }
-
-/* ===========================
-   IMAGE STRIP
-=========================== */
-.image-strip {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-/* Every image fills the full width of the right column,
-   height is natural (no cropping) */
-.media-item {
-  width: 100%;
-  line-height: 0; /* remove inline gap */
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-
-.media-item.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.media-item img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain; /* show full image, no crop */
-}
-
-.media-item--video video {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* ===========================
-   TEXT CONTENT SECTION
-=========================== */
-.content-section {
-  padding: 72px 44px 120px 44px;
-}
-
-.content-block {
-  margin-bottom: 52px;
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-
-.content-block.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.content-block--divider {
-  margin-bottom: 8px;
-}
-
-/* Section titles */
-.section-title {
-  font-family: var(--font-en);
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 18px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--black);
-  line-height: 1.4;
-}
-
-.section-title-zh {
-  font-family: var(--font-zh);
-  font-weight: 300;
-  font-size: 0.88rem;
-  text-transform: none;
-  letter-spacing: 0.02em;
-}
-
-/* Sub titles */
-.sub-title {
-  font-family: var(--font-en);
-  font-weight: 300;
-  font-size: 0.9rem;
-  letter-spacing: 0.04em;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  margin-bottom: 14px;
-  line-height: 1.5;
-}
-
-.sub-title-zh {
-  font-family: var(--font-zh);
-}
-
-/* Intro text */
-.intro-text {
-  font-family: var(--font-zh);
-  font-weight: 300;
-  font-size: 0.95rem;
-  line-height: 2.1;
-  color: #222;
-  letter-spacing: 0.025em;
-}
-
-/* Skills */
-.skill-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.skill-list li {
-  font-family: var(--font-zh);
-  font-weight: 300;
-  font-size: 0.88rem;
-  line-height: 1.9;
-  color: #333;
-  padding-left: 14px;
-  border-left: 1px solid #ccc;
-}
-
-/* Cores */
-.core-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.core-list li {
-  font-family: var(--font-zh);
-  font-weight: 300;
-  font-size: 0.88rem;
-  line-height: 1.9;
-  color: #333;
-}
-
-.core-label {
-  display: block;
-  font-weight: 700;
-  font-size: 0.86rem;
-  letter-spacing: 0.02em;
-  margin-bottom: 2px;
-}
-
-/* Tags */
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-}
-
-.tag-list span {
-  font-family: var(--font-zh);
-  font-weight: 300;
-  font-size: 0.86rem;
-  color: #555;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 2px;
-}
-
-/* Experience */
-.exp-item {
-  margin-bottom: 32px;
-}
-.exp-item:last-child { margin-bottom: 0; }
-
-.exp-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  margin-bottom: 4px;
-  flex-wrap: wrap;
-}
-
-.exp-date {
-  font-family: var(--font-en);
-  font-weight: 300;
-  font-size: 0.8rem;
-  color: var(--mid-gray);
-  white-space: nowrap;
-  letter-spacing: 0.03em;
-}
-
-.exp-company {
-  font-family: var(--font-zh);
-  font-weight: 700;
-  font-size: 0.88rem;
-  letter-spacing: 0.01em;
-}
-
-.exp-role {
-  font-family: var(--font-zh);
-  font-weight: 300;
-  font-size: 0.84rem;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.exp-detail {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.exp-detail li {
-  font-family: var(--font-zh);
-  font-weight: 300;
-  font-size: 0.86rem;
-  line-height: 1.95;
-  color: #333;
-  padding-left: 14px;
-  position: relative;
-}
-
-.exp-detail li::before {
-  content: '—';
-  position: absolute;
-  left: -1px;
-  color: #bbb;
-  font-size: 0.78rem;
-  top: 0.15em;
-}
-
-/* ===========================
-   RESPONSIVE (mobile)
-=========================== */
-@media (max-width: 900px) {
-  :root {
-    --col-left: 100%;
-    --col-mid:  100%;
-    --col-right: 100%;
+    navLinks.forEach(function (link) {
+      link.classList.toggle('active', link.getAttribute('data-target') === current);
+    });
   }
 
-  body {
-    flex-direction: column;
-    height: auto;
-    overflow: auto;
-  }
+  panel.addEventListener('scroll', updateActive, { passive: true });
 
-  .left-panel,
-  .mid-panel,
-  .right-panel {
-    position: relative;
-    width: 100%;
-    height: auto;
-  }
+  // ── 3. Intersection observer → fade in ──
+  const fadeEls = document.querySelectorAll('.media-item, .content-block');
 
-  .left-panel {
-    border-bottom: none;
-  }
+  const io = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { root: panel, threshold: 0.05 }
+  );
 
-  .mid-panel {
-    border-bottom: none;
-    padding: 40px 28px;
-    height: auto;
-    justify-content: flex-start;
-  }
+  fadeEls.forEach(function (el) { io.observe(el); });
 
-  .right-panel {
-    overflow: visible;
-  }
-}
+  // ── 4. Stagger image entrance ──
+  document.querySelectorAll('.image-strip .media-item').forEach(function (el, i) {
+    el.style.transitionDelay = (i * 0.055) + 's';
+  });
+
+})();
