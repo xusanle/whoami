@@ -1,212 +1,496 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>许志豪 Zio Hsu</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;700&family=Roboto+Flex:opsz,wght@8..144,300;8..144,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+/* ===========================
+   CSS VARIABLES
+=========================== */
+:root {
+  --col-left:    180px;
+  --col-mid:     calc(55vw - 180px); /* fills space between left and right */
+  --col-right:   45vw;               /* right panel = ~45% of viewport */
+  --font-zh:     'Noto Sans SC', sans-serif;
+  --font-en:     'Roboto Flex', sans-serif;
+  --black:       #111;
+  --white:       #fff;
+  --mid-gray:    #888;
+  --light-line:  #e0e0e0;
+}
 
-  <!-- =====================
-       LEFT FIXED COLUMN
-       Logo top · Nav middle · Contact bottom (black strip)
-  ===================== -->
-  <aside class="left-panel">
+/* ===========================
+   RESET & BASE
+=========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    <div class="logo">
-      <img src="https://raw.githubusercontent.com/xusanle/whoami/main/11%E6%9C%AA%E6%A0%87%E9%A2%98-1.png" alt="许志豪 Zio Hsu" class="logo-img" />
-    </div>
+html {
+  font-size: 15px; /* base size — slightly larger than before */
+}
 
-    <!-- Contact: black block pinned to bottom of left panel -->
-    <div class="contact-block">
-      <span class="contact-label">Contact me</span>
-      <a href="mailto:hsuzio@foxmail.com" class="contact-email">hsuzio@foxmail.com</a>
-    </div>
+body {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-en), var(--font-zh);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
 
-  </aside>
+/* ===========================
+   LEFT PANEL  (fixed, 220px)
+=========================== */
+.left-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--col-left);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  background: var(--white);
+}
 
-  <!-- =====================
-       MIDDLE FIXED COLUMN
-       Nav, vertically centred, text left-aligned
-  ===================== -->
-  <div class="mid-panel">
-    <nav class="main-nav">
-      <div class="nav-section">
-        <a href="#about" class="nav-primary" data-target="about">About me <span class="nav-zh">/ 关于我</span></a>
-        <div class="nav-sub">
-          <a href="#skills" class="nav-secondary" data-target="skills">Skills <span class="nav-zh">/ 技能特长</span></a>
-          <a href="#cores" class="nav-secondary" data-target="cores">Cores <span class="nav-zh">/ 核心优势</span></a>
-          <a href="#tags" class="nav-secondary" data-target="tags">Tags <span class="nav-zh">/ 标签</span></a>
-        </div>
-      </div>
+/* LOGO — top, image version */
+.logo {
+  padding: 0;
+  flex-shrink: 0;
+  flex: 1;
+  line-height: 0;
+}
 
-      <div class="nav-section">
-        <a href="#experiences" class="nav-primary" data-target="experiences">Experiences <span class="nav-zh">/ 经历</span></a>
-        <div class="nav-sub">
-          <a href="#work" class="nav-secondary" data-target="work">Work <span class="nav-zh">/ 工作经历</span></a>
-          <a href="#education" class="nav-secondary" data-target="education">Education <span class="nav-zh">/ 教育背景</span></a>
-        </div>
-      </div>
+.logo-img {
+  display: block;
+  width: 100%;        /* fills the 180px left column */
+  max-height: 80px;   /* keeps it close to the original two-line text height */
+  object-fit: contain;
+  object-position: top left;
+}
 
-      <div class="nav-section">
-        <a href="#" class="nav-primary nav-external">Project <span class="nav-zh">/ 作品集</span></a>
-        <div class="nav-sub">
-          <a href="#" class="nav-secondary nav-external">Writing <span class="nav-zh">/ 文字</span></a>
-          <a href="#" class="nav-secondary nav-external">Graphic <span class="nav-zh">/ 图像</span></a>
-          <a href="#" class="nav-secondary nav-external">Video <span class="nav-zh">/ 视频</span></a>
-        </div>
-      </div>
+/* ===========================
+   MIDDLE PANEL (fixed, fills space between left & right)
+   Nav top-aligned, text left-aligned
+=========================== */
+.mid-panel {
+  position: fixed;
+  top: 0;
+  left: var(--col-left);
+  width: var(--col-mid);
+  height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 36px 40px 0 40px;
+  z-index: 10;
+  background: var(--white);
+}
 
-      <div class="nav-section">
-        <a href="#" class="nav-primary nav-external">The things I like <span class="nav-zh">/ 我喜欢</span></a>
-      </div>
-    </nav>
-  </div>
+/* NAV — in mid panel, centred vertically, text left-aligned */
+.main-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 100%;
+  max-width: 260px;
+}
 
-  <!-- =====================
-       RIGHT SCROLLABLE COLUMN
-       ~40% viewport width · Images then text
-  ===================== -->
-  <main class="right-panel" id="right-panel">
+.nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
 
-    <div class="image-strip">
+.nav-primary {
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--black);
+  line-height: 1.6;
+  display: inline-block;
+  transition: opacity 0.15s;
+}
+.nav-primary .nav-zh {
+  font-weight: 300;
+}
 
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-1.jpeg" alt="" loading="lazy" />
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-2.jpeg" alt="" loading="lazy" />
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-3.png" alt="" loading="lazy" />
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-4.jpg" alt="" loading="lazy" />
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-5.jpg" alt="" loading="lazy" />
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-6.jpg" alt="" loading="lazy" />
-      </div>
-      <div class="media-item media-item--video">
-        <video src="https://github.com/xusanle/whoami/releases/download/video/video77.mp4"
-               autoplay muted loop playsinline></video>
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-8.JPG" alt="" loading="lazy" />
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-9.jpg" alt="" loading="lazy" />
-      </div>
-      <div class="media-item">
-        <img src="https://raw.githubusercontent.com/xusanle/whoami/main/%E9%A6%96%E9%A1%B5-10.JPG" alt="" loading="lazy" />
-      </div>
+.nav-primary:hover,
+.nav-primary.active {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-    </div>
+.nav-external {
+  color: var(--mid-gray);
+}
+.nav-external:hover {
+  color: var(--mid-gray);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-    <!-- TEXT CONTENT -->
-    <div class="content-section">
+.nav-zh {
+  font-family: var(--font-zh);
+  font-weight: 300;
+}
 
-      <section id="about" class="content-block">
-        <h2 class="section-title">About me <span class="section-title-zh">/ 关于我</span></h2>
-        <p class="intro-text">
-          从事时尚潮流内容相关工作近六年，经历媒体与品牌两端。<br />
-          喜欢视觉叙事，喜欢看不同品牌如何通过图像表达内核。
-        </p>
-      </section>
+.nav-sub {
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
-      <section id="skills" class="content-block">
-        <h3 class="sub-title">Skills <span class="sub-title-zh">/ 技能特长</span></h3>
-        <ul class="skill-list">
-          <li>长内容写作 Long-form Writing</li>
-          <li>品牌文案 Brand Copywriting</li>
-          <li>社交媒体表达 Social Media Content</li>
-          <li>拍摄执行与现场协调 Shoot Production</li>
-          <li>视觉素材整理与排版 Visual Editing & Layout</li>
-        </ul>
-      </section>
+.nav-secondary {
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--black);
+  line-height: 1.8;
+  display: inline-block;
+}
+.nav-secondary .nav-zh {
+  font-family: var(--font-zh);
+}
 
-      <section id="cores" class="content-block">
-        <h3 class="sub-title">Cores <span class="sub-title-zh">/ 核心优势</span></h3>
-        <ul class="core-list">
-          <li>
-            <span class="core-label">趋势转化</span>
-            长期跟进海外流行趋势，将复杂信息整理为清晰、好读的内容，单篇最高阅读量 10w+。
-          </li>
-          <li>
-            <span class="core-label">品牌气质建立</span>
-            参与品牌风格梳理，配合拍摄与造型，统一内容与视觉调性。
-          </li>
-          <li>
-            <span class="core-label">文字与视觉并行</span>
-            在文案与画面之间切换，理解二者的逻辑，也理解它们的边界。
-          </li>
-        </ul>
-      </section>
+.nav-secondary:hover,
+.nav-secondary.active {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-      <section id="tags" class="content-block">
-        <h3 class="sub-title">Tags <span class="sub-title-zh">/ 标签</span></h3>
-        <div class="tag-list">
-          <span>时尚</span><span>潮流文化</span><span>内容创作</span>
-          <span>品牌文案</span><span>创意策划</span><span>视觉执行</span>
-          <span>社交媒体</span><span>趋势观察</span>
-        </div>
-      </section>
+.nav-secondary.nav-external {
+  color: var(--mid-gray);
+}
+.nav-secondary.nav-external:hover {
+  color: var(--mid-gray);
+}
 
-      <section id="experiences" class="content-block content-block--divider">
-        <h2 class="section-title">Experiences <span class="section-title-zh">/ 经历</span></h2>
-      </section>
+/* CONTACT BLOCK — black strip pinned to bottom */
+.contact-block {
+  flex-shrink: 0;
+  background: var(--black);
+  color: var(--white);
+  padding: 24px 28px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-      <section id="work" class="content-block">
-        <h3 class="sub-title">Work <span class="sub-title-zh">/ 工作经历</span></h3>
+.contact-label {
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  color: var(--white);
+}
 
-        <div class="exp-item">
-          <div class="exp-header">
-            <span class="exp-date">2025.03 — 至今</span>
-            <span class="exp-company">广州团月半服装设计有限公司</span>
-          </div>
-          <p class="exp-role">创意策划</p>
-          <ul class="exp-detail">
-            <li>参与品牌拍摄前期构思与执行，根据主题提出画面方向与基础分镜，协助落地拍摄方案。</li>
-            <li>负责 immune system 与 YLAMBS 小红书内容策划与发布，根据不同品牌定位调整表达方式。</li>
-            <li>对拍摄素材进行二次整理，根据平台调整图文与视频排版，统一风格下提升适配度。</li>
-            <li>持续关注时尚与青年文化内容，结合数据反馈调整内容方向。</li>
-          </ul>
-        </div>
+.contact-email {
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  transition: color 0.15s;
+}
+.contact-email:hover {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-        <div class="exp-item">
-          <div class="exp-header">
-            <span class="exp-date">2020.10 — 2025.03</span>
-            <span class="exp-company">广州潮库信息科技有限公司</span>
-          </div>
-          <p class="exp-role">时尚专题编辑</p>
-          <ul class="exp-detail">
-            <li>长期跟进海外流行趋势，年均输出近百篇长内容（约2000字/篇），涵盖先锋时尚、球鞋、户外等方向，发布于「潮库」公众号，单篇最高阅读量 10w+。</li>
-            <li>参与始祖鸟、PUMA、沃尔沃等品牌项目，根据品牌调性完成文案撰写。</li>
-            <li>参与 LV Art Trainer、FILA 项目拍摄及保时捷75周年线下活动，负责现场协调与执行支持。</li>
-          </ul>
-        </div>
-      </section>
 
-      <section id="education" class="content-block">
-        <h3 class="sub-title">Education <span class="sub-title-zh">/ 教育背景</span></h3>
-        <div class="exp-item">
-          <div class="exp-header">
-            <span class="exp-date">2017.09 — 2021.06</span>
-            <span class="exp-company">华南农业大学</span>
-          </div>
-          <p class="exp-role">汉语言文学 · 本科</p>
-        </div>
-      </section>
 
-    </div>
-  </main>
+/* ===========================
+   RIGHT PANEL  (scrollable, 40vw)
+=========================== */
+.right-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--col-right);
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: var(--white);
+  /* hide scrollbar */
+  scrollbar-width: none;
+}
+.right-panel::-webkit-scrollbar { display: none; }
 
-  <script src="script.js"></script>
-</body>
-</html>
+/* ===========================
+   IMAGE STRIP
+=========================== */
+.image-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Every image fills the full width of the right column,
+   height is natural (no cropping) */
+.media-item {
+  width: 100%;
+  line-height: 0; /* remove inline gap */
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.media-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.media-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain; /* show full image, no crop */
+}
+
+.media-item--video video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===========================
+   TEXT CONTENT SECTION
+=========================== */
+.content-section {
+  padding: 72px 44px 120px 44px;
+}
+
+.content-block {
+  margin-bottom: 52px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.content-block.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.content-block--divider {
+  margin-bottom: 8px;
+}
+
+/* Section titles */
+.section-title {
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--black);
+  line-height: 1.4;
+}
+
+.section-title-zh {
+  font-family: var(--font-zh);
+  font-weight: 300;
+  font-size: 0.88rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* Sub titles */
+.sub-title {
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.sub-title-zh {
+  font-family: var(--font-zh);
+}
+
+/* Intro text */
+.intro-text {
+  font-family: var(--font-zh);
+  font-weight: 300;
+  font-size: 0.95rem;
+  line-height: 2.1;
+  color: #222;
+  letter-spacing: 0.025em;
+}
+
+/* Skills */
+.skill-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skill-list li {
+  font-family: var(--font-zh);
+  font-weight: 300;
+  font-size: 0.88rem;
+  line-height: 1.9;
+  color: #333;
+  padding-left: 14px;
+  border-left: 1px solid #ccc;
+}
+
+/* Cores */
+.core-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.core-list li {
+  font-family: var(--font-zh);
+  font-weight: 300;
+  font-size: 0.88rem;
+  line-height: 1.9;
+  color: #333;
+}
+
+.core-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+
+/* Tags */
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.tag-list span {
+  font-family: var(--font-zh);
+  font-weight: 300;
+  font-size: 0.86rem;
+  color: #555;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 2px;
+}
+
+/* Experience */
+.exp-item {
+  margin-bottom: 32px;
+}
+.exp-item:last-child { margin-bottom: 0; }
+
+.exp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.exp-date {
+  font-family: var(--font-en);
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: var(--mid-gray);
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+.exp-company {
+  font-family: var(--font-zh);
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+}
+
+.exp-role {
+  font-family: var(--font-zh);
+  font-weight: 300;
+  font-size: 0.84rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.exp-detail {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exp-detail li {
+  font-family: var(--font-zh);
+  font-weight: 300;
+  font-size: 0.86rem;
+  line-height: 1.95;
+  color: #333;
+  padding-left: 14px;
+  position: relative;
+}
+
+.exp-detail li::before {
+  content: '—';
+  position: absolute;
+  left: -1px;
+  color: #bbb;
+  font-size: 0.78rem;
+  top: 0.15em;
+}
+
+/* ===========================
+   RESPONSIVE (mobile)
+=========================== */
+@media (max-width: 900px) {
+  :root {
+    --col-left: 100%;
+    --col-mid:  100%;
+    --col-right: 100%;
+  }
+
+  body {
+    flex-direction: column;
+    height: auto;
+    overflow: auto;
+  }
+
+  .left-panel,
+  .mid-panel,
+  .right-panel {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  .left-panel {
+    border-bottom: none;
+  }
+
+  .mid-panel {
+    border-bottom: none;
+    padding: 40px 28px;
+    height: auto;
+    justify-content: flex-start;
+  }
+
+  .right-panel {
+    overflow: visible;
+  }
+}
