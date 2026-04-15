@@ -54,7 +54,7 @@ body {
 
 /* LOGO — top, image version */
 .logo {
-  padding: 12px 12px 0 12px;   /* 四周留一点呼吸空间，不贴死 */
+  padding: 20px 20px 0 20px;   /* 四周留一点呼吸空间，不贴死 */
   flex-shrink: 0;
   line-height: 0;
 }
